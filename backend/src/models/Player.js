@@ -37,31 +37,65 @@ export class Player extends Usuarios {
      * @returns {boolean} - true se um novo recorde foi registrado
      */
     atualizarRecorde(temaId, nivelId, tempoGasto) {
+        //Essa string chave garante que o recorde do nível Fácil nunca seja sobrescrito por um 
+        // tempo do nível Difícil.
         const chave = `${temaId}-${nivelId}`; // ex: "1-2" = Frutas Médio
 
+        //O código vai até o objeto recordesPessoais (atributo dessa classe ) e verifica se 
+        // já existe algo nessa variável, exemplo, se "1-2" não existir retorna undefined
         const registroAtual = this.recordesPessoais[chave];
+
+        //?. = se registroAtual estiver vazia, ele não quebra o código, apenas retorna undefined.  
+        //?? = se não houver recorde, ele define como null.
         const recordeAtual  = registroAtual?.melhorTempo ?? null;
 
+        // recordeAtual === null é o mesmo que: é a primeira vez que ele joga esse tema nesse nível? 
+        // Se sim, qualquer tempo é um recorde.
         if (recordeAtual === null || tempoGasto < recordeAtual) {
             // Busca os nomes do tema e nível para guardar junto ao recorde
 
             // Arrow function (=>) é uma forma curta de escrever função.
             // Aqui é equivalente a function(t) { return t.id === temaId; }
+            // Para cada item (t) que olhar no array TEMAS, verifique se o id dele é igual 
+            // ao temaId que eu te dei, se não retorna undefined
             const tema  = TEMAS.find(t => t.id === temaId);
+            
+            // Object.values(NIVEIS) transforma o objeto NIVEIS em uma lista/array de seus valores (nesse caso retorna outro objeto)
+            // Para cada item (n) que olhar no array, verifique se o id dele é igual 
+            // ao nivelId que eu te dei, se não retorna undefined
+            // Fazemos isso para que, na hora de salvar o recorde, possamos pegar o nome do nível, como 'FÁCIL'
             const nivel = Object.values(NIVEIS).find(n => n.id === nivelId);
 
+            // Salva o objeto recordesPessoais
             this.recordesPessoais[chave] = {
                 melhorTempo: tempoGasto,
                 // ?. evita erro se for undefined | ?? define valor padrão (null)
+                // Se tema não existir ou se tema.nome não existir, o resultado será undefined.
+                // O ?. significa: “Acesse nome só se tema existir"
+                // O ?? significa: “Se o valor da esquerda for null ou undefined, usa o da direita"
                 nomeTema:  tema?.nome  ?? `Tema ${temaId}`,
                 nomeNivel: nivel?.nome ?? `Nível ${nivelId}`,
                 data: new Date()
             };
 
+            /*
+            Exemplo de como recordesPessoais fica salvo:
+            this.recordesPessoais["1-2"] = {
+                melhorTempo: 45,
+                nomeTema: "Frutas",
+                nomeNivel: "Intermediário",
+                data: new Date() // Registra o dia 
+            };
+           */
+
+            // Incrementa a quantidade de partidas do jogador
             this.totalPartidasConcluidas++;
-            return true; // novo recorde
+            // Retorna o novo recorde
+            return true; 
         }
 
+        // Se o if acima for falso, o método incrementa o totalPartidasConcluidas e 
+        // retorna falso, ou seja, não foi criado o novo recorde.
         this.totalPartidasConcluidas++;
         return false;
     }

@@ -13,12 +13,17 @@ export class RankingService {
      * Filtra apenas jogadores que jogaram aquela combinação exata.
      */
     static getRankingPorTemaENivel(temaId, nivelId) {
+        // Encontra o tema pelo id
         const tema  = TEMAS.find(t => t.id === temaId);
+
+        // Encontra o nivel pelo id
         const nivel = Object.values(NIVEIS).find(n => n.id === nivelId);
 
+        // Lança um erro caso não tenha encontrado o tema ou o nivel
         if (!tema)  throw new Error(`Tema ${temaId} não encontrado.`);
         if (!nivel) throw new Error(`Nível ${nivelId} não encontrado.`);
 
+        // Escreve a combinação da chave
         const chave = `${temaId}-${nivelId}`;
 
         const ranking = jogadoresMock

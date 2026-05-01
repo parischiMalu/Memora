@@ -1,4 +1,4 @@
-// PARA TESTAR O CÓDIGO
+//Configurações de níveis
 
 export const NIVEIS = {
     FACIL: { id: 1, pares: 4, nome: "Iniciante" },   // 8 cartas

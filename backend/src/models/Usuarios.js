@@ -2,7 +2,7 @@
 import bcrypt from 'bcryptjs';
 
 /**
- * Classe base (pai) para todos os usuários do sistema.
+ * Classe abstrata, base (pai) para todos os usuários do sistema.
  * Contém os atributos e métodos comuns a Player e Admin.
  * Nunca deve ser instanciada diretamente, somente as filhas (Player e Admin).
  */
@@ -13,12 +13,13 @@ export class Usuarios {
         this.nome = nome;
         this.email = email;
         this.senha = bcrypt.hashSync(senhaTexto, 10); // serve para não salvar a senha pura
+        // Esse número 10 é o chamado Cost Factor, define o quão complexo será o cálculo para gerar o hash.
         this.role = role;           // 'jogador' ou 'admin'
         this.dataCadastro = new Date();
     }
 
     /**
-     * Verifica se a senha digitada corresponde ao hash salvo.
+     * Verifica se a senha digitada corresponde ao hash salvo, não podemos reverter a criptografia
      * @param {string} senhaTexto - A senha em texto puro digitada pelo usuário
      * @returns {boolean}
      */

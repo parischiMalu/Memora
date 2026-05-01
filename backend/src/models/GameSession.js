@@ -2,7 +2,7 @@ import { GameService } from '../services/GameService.js';
 import { Player } from './Player.js';
 
 /**
- * Representa uma PARTIDA em andamento.
+ * Representa uma partida em andamento.
  * Coordena o jogador, o tabuleiro gerado e o tempo da partida.
  */
 
