@@ -1,0 +1,10 @@
+@font-face {
+    font-family: Gliker;
+    src: url(../assets/fonts/Gliker/Gliker-Regular.woff2) format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: League;
+    src: url(../assets/fonts/League/LeagueSpartan-Regular.ttf) format('truetype');
+}
