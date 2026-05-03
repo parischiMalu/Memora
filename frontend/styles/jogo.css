@@ -1,0 +1,56 @@
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 0 20px;
+
+}
+.header #logo{
+    width: 300px;
+    height: auto;
+}   
+
+.header #perfil{
+    width: 50px;
+    height: auto;
+}
+
+.header #perfil-btn{
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.menu-dropdown {
+    position: absolute;
+    background-color: #d9d9d9;
+    text-align: right;
+    border-radius: 5px;
+    display: none;
+    padding: 10px;
+    right: 20px;
+}
+.menu-dropdown a {
+    display: block;
+    padding: 5px 10px;
+    color: #333;
+}
+
+.menu-dropdown a:hover {
+    background-color: #c0c0c0;
+    color: #000;
+    border-radius: 5px;
+}
+
+
+/* versão dark */
+body.dark .menu-dropdown {
+    background-color: #333;
+}
+body.dark .menu-dropdown a{
+    color: #fff;
+}
+body.dark .menu-dropdown a:hover {
+    background-color: #7c7c7c;
+    color: #fff;
+}

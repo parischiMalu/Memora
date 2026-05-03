@@ -4,15 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/jogo.css">
     <link rel="icon" type="image/x-icon" href="../assets/images/icon/memora-favicon.ico">
     <title>Memora</title>
 </head>
 <body>
-    <img src="../assets/images/icon/memora-icon.svg" alt="Logo do Memora" style="width: 200px; height: auto;">
-    <h2 style="font-family: League;">oi</h2>
-    <h1 style="font-family: Gliker;">Jogo da Memória</h1>
+    <section class="header">
+        <img src="../assets/images/logo.svg" alt="Logo do Memora" id="logo">
+        <div class="perfil-usu">
+            <button id="perfil-btn">
+                <img src="../assets/images/icon/circle-user-round.svg" alt="Perfil do usuário" id="perfil">
+            </button>
+            <div class="menu-dropdown">
+                <ul>
+                    <li><a href="#">Ranking</a></li>
+                    <li><a href="#">Configurações</a></li>
+                    <li><a href="#">Sair</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
+    <button id="theme-toggle">
+        <div>
+            <img src="../assets/images/icon/sun.svg" alt="modo claro">
+            <img src="../assets/images/icon/moon.svg" alt="modo escuro">
+        </div>
+    </button>
     <div>
-        <script src="../services/game.js"></script>
+        <script src="../scripts/jogo.js"></script>
+        <script src="../scripts/dark-mode.js" ></script>
     </div>
 </body>
 </html>

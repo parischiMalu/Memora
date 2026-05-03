@@ -8,7 +8,6 @@ if (currentTheme === 'dark') {
 }
 
 btn.addEventListener("click", () => {
-    console.log("clicou");
     const isDark = document.body.classList.toggle("dark");
     localStorage.setItem("theme", isDark ? "dark" : "light");
 });
