@@ -1,3 +1,5 @@
+/* itens da header */
+
 .header{
     width: 100%;
     display: flex;
@@ -43,7 +45,7 @@
 }
 
 
-/* versão dark */
+/* versão dark da header */
 body.dark .menu-dropdown {
     background-color: #333;
 }
@@ -51,6 +53,83 @@ body.dark .menu-dropdown a{
     color: #fff;
 }
 body.dark .menu-dropdown a:hover {
+    background-color: #7c7c7c;
+    color: #fff;
+}
+
+/* area do jogo */
+.area-jogo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    padding: 20px;
+    color: #fff;
+}
+.tema-selector, .timer{
+    padding-top: 50px;
+}
+
+.tema-selector{
+    position: relative;
+}
+.tema-selector button{
+    font-size: x-large;
+    font-weight: bold;
+    font-family: var(--text-font);
+    color: #ec4899;
+}
+
+.tema-selector #temas{
+    width: auto;
+    max-width: 130px;
+    color: #545454;
+    position: absolute;
+    background-color: #d9d9d9;
+    text-align: left;
+    border-radius: 5px;
+    display: none;
+    padding: 10px;
+}
+
+.tema-selector #temas li{
+    padding: 5px 10px;
+    color: #333;
+}
+
+.tema-selector #temas li:hover{
+    background-color: #c0c0c0;
+    color: #000;
+    border-radius: 5px;
+}
+
+.tabuleiro {
+    width: 70vw;
+    height: 50vh;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+
+
+
+
+
+.timer{
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+
+/* versão dark da área do jogo */
+body.dark .tema-selector #temas{
+    background-color: #333;
+}
+body.dark .tema-selector #temas li{
+    color: #fff;
+}
+body.dark .tema-selector #temas li:hover {
     background-color: #7c7c7c;
     color: #fff;
 }

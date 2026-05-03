@@ -1,3 +1,5 @@
+/* fontes */
+
 @font-face {
     font-family: Gliker;
     src: url(../assets/fonts/Gliker/Gliker-Regular.woff2) format('woff2');
@@ -9,12 +11,14 @@
     src: url(../assets/fonts/League/LeagueSpartan-Regular.ttf) format('truetype');
 }
 
+/* variáveis globais */
 :root{
     --bg-image: url('../assets/images/bg-claro.png');
     --title-font: 'Gliker', sans-serif;
     --text-font: 'League', sans-serif;
 }
 
+/* reset de estilos */
 *{
     margin: 0;
     padding: 0;
@@ -32,6 +36,7 @@ a{
 ul, li{
     list-style: none;
 }
+/* body index.html */
 
 body{
     font-family: var(--text-font);
