@@ -1,7 +1,7 @@
 // Implementa a classe responsável pela lógica do jogo
 
 import { TEMAS } from '../mocks/temas.mock.js';
-import { NIVEIS } from '../models/Configuracoes.js';
+// import { NIVEIS } from '../models/Configuracoes.js';
 
 export class GameService {
     /**
@@ -9,26 +9,27 @@ export class GameService {
      * @param {number} temaId 
      * @param {number} nivelId 
      */
-    static gerarTabuleiro(temaId, nivelId) {
+    static gerarTabuleiro(temaId /*nivelId*/) {
         // Busca o tema pelo id, retorna undefined se não encontrado
         const tema = TEMAS.find(t => t.id === temaId);
 
         // Converte NIVEIS em um array com os valores do objeto e busca o primeiro nível cujo id 
         // seja igual ao nivelId, retorna undefined caso não encontrado
-        const nivel = Object.values(NIVEIS).find(n => n.id === nivelId);
+        // const nivel = Object.values(NIVEIS).find(n => n.id === nivelId);
 
         // Se o tema ou o nivel não foram encontrados (undefined), lance um erro
-        if (!tema || !nivel) {
-            throw new Error("Tema ou Nível inválido.");
+        if (!tema /*|| !nivel*/) {
+            throw new Error("Tema inválido.");
         }
 
         // 1. Seleciona a quantidade de cartas necessária para o nível (ex: 4 pares = 4 cartas)
         // O slice copia uma parte de um array sem alterar o original, 
         // exemplo: pegue as cartas do índice 0 até nivel.pares (sem incluir o final)
-        const cartasSelecionadas = tema.cartas.slice(0, nivel.pares);
+        // const cartasSelecionadas = tema.cartas.slice(0, nivel.pares);
 
         // 2. Duplica as cartas para formar pares
-        let tabuleiro = [...cartasSelecionadas, ...cartasSelecionadas];
+        // let tabuleiro = [...cartasSelecionadas, ...cartasSelecionadas];
+        let tabuleiro = [...tema.cartas, ...tema.cartas];
 
         // 3. Embaralhamento com o algoritmo Fisher-Yates
         // Percorre o array de trás para frente

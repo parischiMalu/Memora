@@ -113,8 +113,7 @@ body.dark .menu-dropdown a:hover {
 }
 .grid-jogo{
     display: grid;
-    /* dificuldade 1 = 4 dificuldade 2 = 4    dificuldade 3 = 24 cartas 6, 1fr*/
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     place-content: center;
     gap: 20px;
     width: 100%;
@@ -124,34 +123,30 @@ body.dark .menu-dropdown a:hover {
     position: relative;
     justify-self: center;
     align-self: center;
-    width: 154px;
-    height: 200px;
-    transition: all 400ms;
+    width: 139px;
+    height: 180px;
+    transition: all 300ms ease;
+    transform-style: preserve-3d;
 }
+
 .face{
     width: 100%;
     height: 100%;
     position: absolute;
+    background-size: cover;
+    background-position: center;
 }
 .front{
-    background-image: url(../assets/temas/cornelio/Carnaval.png);
-    background-size: cover;
-    background-position: center;
-    width: auto;
-    height: 250px;
+    transform: rotateY(180deg) ;
 }
 .back{
-    background-image: url(../assets/images/3.svg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-image: url(../assets/images/Frame\ 3.png);
+    backface-visibility: hidden;
 }
 
-.back:hover{
+.card:hover{
     transform: rotateY(180deg);
 }
-
-
 
 
 .timer{
