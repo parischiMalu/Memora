@@ -1,559 +1,260 @@
-/* ================================================
-   LOGIN.CSS
-   
-   DEPENDE DE:
-     global.css → fornece:
-       - Reset de margens/paddings
-       - Variáveis CSS: --text-font, --title-font, --bg-color, etc.
-       - Estilos base do body e do botão #theme-toggle (dark mode)
 
-   ESTRUTURA DESTE ARQUIVO:
-     1. Fontes extras (@font-face)
-     2. Centralização da tela (.login-container)
-     3. Card principal (.card)
-     4. Logo e subtítulo
-     5. Campos de formulário (.campo, .input-wrapper)
-     6. Botão do olho (toggle de senha)
-     7. Link "Esqueceu a senha?" (.linha-esqueceu)
-     8. Botão ENTRAR (.btn-entrar)
-     9. Link de cadastro (.linha-cadastro)
-    10. Modais (.modal-overlay, .modal)
-    11. Toast de feedback (.mensagem)
-    12. Responsivo (@media max-width: 480px)
-   ================================================ */
-
-
-/* ================================================
-   1. FONTES EXTRAS
-   Carrega as fontes customizadas usadas no projeto.
-   @font-face permite usar fontes locais sem depender
-   de serviços externos como Google Fonts.
-   ================================================ */
-
-/* Fonte Gliker — usada em títulos e elementos de destaque */
-@font-face {
-    font-family: Gliker;  /* Nome da família de fonte (usado como valor em font-family: Gliker) */
-    src: url('../assets/fonts/Gliker/Gliker-SemiBold.woff2') format('woff2');
-    /* woff2: formato mais comprimido e moderno, suportado por todos os browsers modernos */
-    font-weight: 600; /* Este arquivo corresponde ao peso SemiBold (600) */
-}
-@font-face {
-    font-family: Gliker;
-    src: url('../assets/fonts/Gliker/Gliker-Bold.woff2') format('woff2');
-    font-weight: 700; /* Este arquivo corresponde ao peso Bold (700) */
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Fonte League Spartan — usada em textos do corpo, labels, botões */
-@font-face {
-    font-family: League;
-    src: url('../assets/fonts/League/LeagueSpartan-Bold.ttf') format('truetype');
-    /* truetype: formato .ttf, compatível com todos os sistemas operacionais */
-    font-weight: 700; /* Bold */
-}
-@font-face {
-    font-family: League;
-    src: url('../assets/fonts/League/LeagueSpartan-ExtraBold.ttf') format('truetype');
-    font-weight: 800; /* ExtraBold — usado em botões como ENTRAR */
-}
-@font-face {
-    font-family: League;
-    src: url('../assets/fonts/League/LeagueSpartan-Medium.ttf') format('truetype');
-    font-weight: 500; /* Medium — usado em textos secundários */
-}
-@font-face {
-    font-family: League;
-    src: url('../assets/fonts/League/LeagueSpartan-SemiBold.ttf') format('truetype');
-    font-weight: 600; /* SemiBold — usado em labels dos campos */
-}
-
-
-/* ================================================
-   2. CENTRALIZAÇÃO DA TELA
-   .login-container cobre toda a viewport e centraliza
-   o card tanto vertical quanto horizontalmente.
-   ================================================ */
-.login-container {
-    min-height: 100vh;         /* Ocupa no mínimo a altura total da janela do navegador */
-    display: flex;             /* Ativa o Flexbox para centralizar o filho (.card) */
-    align-items: center;       /* Centraliza verticalmente (eixo cruzado no flex-direction:row) */
-    justify-content: center;   /* Centraliza horizontalmente (eixo principal) */
-    padding: 20px;             /* Espaçamento interno para não colar nas bordas em telas pequenas */
-}
-
-
-/* ================================================
-   3. CARD PRINCIPAL
-   Caixa branca que contém todo o formulário de login.
-   Em dark mode, o fundo muda para cinza escuro.
-   ================================================ */
 .card {
-    background-color: #ffffff;         /* Fundo branco no modo claro */
-    border-radius: 20px;               /* Cantos bem arredondados (20px) */
-    padding: 36px 44px 32px;           /* Espaçamento interno: topo 36px | lados 44px | base 32px */
-    width: 100%;                       /* Ocupa toda a largura disponível (limitada por max-width) */
-    max-width: 430px;                  /* Largura máxima do card — não cresce além disso em telas largas */
-    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.15); /* Sombra suave: deslocamento vertical 6px, blur 28px, 15% opacidade */
-    display: flex;                     /* Flexbox para empilhar os elementos filhos verticalmente */
-    flex-direction: column;            /* Empilha em coluna (de cima para baixo) */
-    align-items: center;               /* Centraliza horizontalmente cada filho dentro do card */
-    gap: 0;                            /* Sem espaço automático entre filhos — espaçamento controlado por margin */
+    background-color: #ffffff;  
+    border-radius: 20px; 
+    padding: 36px 44px 32px;                 
+    max-width: 430px; 
+    display: flex;                    
+    flex-direction: column;     
+    align-items: center; 
 }
 
 body.dark .card {
-    background-color: #3a3a3a; /* Fundo cinza escuro quando body tem a classe .dark */
+    background-color: #3a3a3a;
 }
 
 
-/* ================================================
-   4. LOGO E SUBTÍTULO
-   ================================================ */
-
-/* Logo SVG do Memora */
 .logo {
-    width: 240px;      /* Largura fixa da logo */
-    height: auto;      /* Altura automática mantém a proporção original do SVG */
-    margin-bottom: 10px; /* Espaço abaixo da logo antes do subtítulo */
+    width: 240px;
+    height: auto;   
+    margin-bottom: 10px;
 }
 
-/* Texto "CONECTE-SE PARA JOGAR!" */
-.subtitulo {
-    font-family: var(--text-font); /* Usa a variável de fonte definida no global.css */
-    font-weight: 800;              /* ExtraBold — texto em caixa alta precisa de peso maior */
-    font-size: 14px;               /* Tamanho pequeno, o impacto vem das letras maiúsculas + tracking */
-    letter-spacing: 2.5px;         /* Espaçamento entre letras para efeito estilo "título" */
-    color: #2d2d2d;                /* Cinza bem escuro no modo claro */
-    margin-bottom: 24px;           /* Espaço abaixo antes do primeiro campo */
-    text-align: center;            /* Centralizado dentro do card */
+
+.subtitulo {                                          
+    margin-bottom: 30px;             
 }
 
 body.dark .subtitulo {
-    color: #f0f0f0; /* Quase branco no modo escuro para manter legibilidade */
+    color: #ffffff;
 }
 
-
-/* ================================================
-   5. CAMPOS DE FORMULÁRIO
-   Cada campo (.campo) contém: label + .input-wrapper
-   .input-wrapper agrupa: ícone + input + (opcional: botão olho)
-   ================================================ */
-
-/* Wrapper do campo: label + input */
-.campo {
-    width: 100%;       /* Campo ocupa toda a largura do card */
-    margin-bottom: 16px; /* Espaço entre campos consecutivos */
-}
-
-
-
-/* Container do input com ícone(s) */
-.input-wrapper {
-    display: flex;               /* Flex para alinhar ícone + input + botão olho em linha */
-    align-items: center;         /* Centraliza verticalmente todos os itens */
-    gap: 10px;                   /* Espaço de 10px entre ícone, input e botão */
-    border: 2.5px solid #3ecec4; /* Borda verde agua (cor principal do Memora) de 2.5px */
-    border-radius: 50px;         /* Totalmente arredondado (pill shape) */
-    padding: 9px 14px;           /* Espaçamento interno: 9px vertical | 14px horizontal */
-    background-color: #ffffff;   /* Fundo branco no modo claro */
-    transition: background-color 0.3s, box-shadow 0.2s; /* Transição suave ao mudar tema */
-}
-
-/* Estado de foco: quando qualquer elemento dentro do wrapper está em foco */
-.input-wrapper:focus-within {
-    /* :focus-within aplica estilos quando qualquer filho do wrapper está focado */
-    box-shadow: 0 0 0 3px rgba(62, 206, 196, 0.25); /* Anel de foco verde ag com 25% opacidade */
-}
-
-body.dark .input-wrapper {
-    background-color: #2d2d2d; /* Fundo cinza médio-escuro no modo escuro */
-}
-
-/* Ícone decorativo dentro do input (usuário, cadeado, etc.) */
 .icone-campo {
-    width: 22px;      /* Largura fixa do ícone */
-    height: 22px;     /* Altura fixa — mantém quadrado */
-    flex-shrink: 0;   /* Impede que o ícone encolha quando o input precisar de espaço */
-    opacity: 0.55;    /* Semi-transparente para não chamar mais atenção que o input */
+    width: 22px;      
+    height: 22px;   
 }
 
 body.dark .icone-campo {
-    filter: invert(100%) brightness(1.5); /* Inverte cores para ícones ficarem claros no dark mode */
-    opacity: 0.7; /* Levemente mais opaco no dark para compensar a inversão */
+    opacity: 0.7; 
 }
 
-/* O próprio input de texto/email/password dentro do wrapper */
-.input-wrapper input {
-    flex: 1;               /* Ocupa todo o espaço restante dentro do wrapper */
-    border: none;          /* Remove borda própria (a borda está no .input-wrapper) */
-    outline: none;         /* Remove outline padrão do browser (o anel de foco customizado está no :focus-within) */
-    background: transparent; /* Fundo transparente para herdar a cor do .input-wrapper */
-    font-family: var(--text-font);
-    font-size: 15px;       /* Tamanho legível para o texto digitado */
-    color: #2d2d2d;        /* Cor do texto digitado no modo claro */
+.input-group {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    height: 50px;
+    border: 2px solid #3ecec4;
+    border-radius: 30px;
+    padding: 0 15px;
+    margin-bottom: 15px;
+    background: transparent;
 }
 
-body.dark .input-wrapper input {
-    color: #f0f0f0; /* Texto claro no modo escuro */
+.campo {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+body.dark .campo {
+    color: #f0f0f0;
 }
 
 
-/* ================================================
-   6. BOTÃO DO OLHO (TOGGLE DE SENHA)
-   Permite ao usuário alternar visibilidade da senha.
-   ================================================ */
-
-/* Botão que envolve o ícone do olho */
 #olho-btn {
     background: none;
     border: none;
-    cursor: pointer;
     padding: 0;
-    margin-right: 4px; /* Espaço entre o olho e a borda direita do campo */
-    display: flex;
+    cursor: pointer;
+    display: none;
     align-items: center;
-    justify-content: center;
-    transition: opacity 0.2s ease;
-    z-index: 10;
-    min-width: 30px; /* Garante área de clique */
-    min-height: 30px;
 }
 
-/* Ícone do olho (a imagem em si) */
-#olho-img {
-    width: 45px;   
-    height: auto;  /* Mantém a proporção */
-    opacity: 0.55; 
-    transition: opacity 0.2s;
+#olho-btn img {
+    width: 40px;
+    height: 30px;
 }
 
-#olho-btn:hover #olho-img {
-    opacity: 0.9;
-}
-
-/* Inversão para Dark Mode */
-body.dark #olho-img {
-    filter: invert(100%) brightness(1.5);
-}
-
-/* --- LÓGICA DE VISIBILIDADE --- 
-   O botão só aparece se houver texto no input.
-   Funciona porque adicionamos o placeholder=" " no HTML. */
-
-#senha:placeholder-shown ~ #olho-btn {
-    opacity: 0;
-    pointer-events: none;
-}
-
-#senha:not(:placeholder-shown) ~ #olho-btn {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Remove o ícone de olho padrão do Edge/Chrome/Safari */
 input::-ms-reveal,
 input::-ms-clear {
     display: none;
 }
 
-/* Para navegadores baseados em Webkit (caso apareça em outros) */
-input::-webkit-contacts-auto-fill-button,
-input::-webkit-credentials-auto-fill-button {
-    visibility: hidden;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-}
-
-/* ================================================
-   7. LINK "ESQUECEU A SENHA?"
-   Posicionado à direita, acima do botão ENTRAR.
-   ================================================ */
-.linha-esqueceu {
-    width: 100%;          /* Ocupa toda a largura do card */
-    text-align: right;    /* Alinha o botão/link à direita */
-    margin-bottom: 20px;  /* Espaço antes do botão ENTRAR */
-    margin-top: -6px;     /* Aproxima levemente do campo de senha acima */
-}
-
-.linha-esqueceu button {
-    font-family: var(--text-font);
-    font-size: 13px;
-    font-weight: 500;          /* Medium — peso leve para link secundário */
-    color: #777;               /* Cinza médio — texto de baixa prioridade visual */
-    text-decoration: underline; /* Sublinhado para indicar que é clicável */
-    transition: color 0.2s;    /* Transição suave na mudança de cor */
-    background: none;          /* Sem fundo (é um <button> estilizado como link) */
-    border: none;              /* Sem borda */
-    cursor: pointer;           /* Cursor de mãozinha */
-}
-
-.linha-esqueceu button:hover {
-    color: #ec4899; /* Rosa do Memora ao passar o mouse — destaque de interação */
-}
-
-body.dark .linha-esqueceu button {
-    color: #aaa; /* Cinza mais claro no dark mode para contraste suficiente */
-}
-
-
-/* ================================================
-   8. BOTÃO ENTRAR
-   Botão principal de ação — maior, mais chamativo,
-   fundo rosa com sombra colorida (glow effect).
-   ================================================ */
 .btn-entrar {
-    width: 100%;                    /* Ocupa toda a largura do card */
-    padding: 13px;                  /* Espaçamento interno generoso para área de toque */
-    background-color: #ec4899;      /* Rosa vibrante — cor de ação principal */
-    color: #ffffff;                 /* Texto branco para contraste máximo no fundo rosa */
-    font-family: var(--text-font);
-    font-weight: 800;               /* ExtraBold para o texto do botão principal */
-    font-size: 16px;                /* Maior que os outros textos — hierarquia visual */
-    letter-spacing: 2px;            /* Espaçamento entre letras reforça o estilo maiúsculo */
-    border-radius: 50px;            /* Totalmente arredondado (pill shape) */
-    border: none;                   /* Sem borda — cor sólida é suficiente */
-    cursor: pointer;                /* Cursor de mãozinha */
-    box-shadow: 0 5px 18px rgba(236, 72, 153, 0.4); /* Glow rosa: sombra colorida com 40% opacidade */
-    transition: transform 0.15s, box-shadow 0.15s, background-color 0.2s; /* Transição suave para hover/active */
-    margin-bottom: 18px;            /* Espaço antes do link de cadastro */
+    width: 100%;                    
+    padding: 15px;                  
+    background-color: #ec4899;      
+    color: #ffffff;                 
+    font-weight: 600;              
+    font-size: 16px;                
+    letter-spacing: 2px;            
+    border-radius: 50px;            
+    border: none;                   
+    cursor: pointer;              
+    margin-bottom: 18px;
+    margin-top: 20px;
 }
 
 .btn-entrar:hover {
-    background-color: #db2777;      /* Rosa mais escuro no hover — feedback visual */
-    transform: translateY(-2px);    /* Sobe levemente — efeito de "levitar" */
-    box-shadow: 0 8px 22px rgba(236, 72, 153, 0.5); /* Sombra maior no hover — reforça o levitar */
+    background-color: #db2777;     
 }
 
-.btn-entrar:active {
-    transform: translateY(0); /* Volta à posição original ao clicar — efeito de "pressionar" */
-}
-
-
-/* ================================================
-   9. LINK DE CADASTRO
-   Linha de texto + botão estilizado como link,
-   convida o usuário a criar uma conta.
-   ================================================ */
 .linha-cadastro {
-    font-family: var(--text-font);
-    font-size: 13px;
-    font-weight: 500; /* Medium — texto secundário */
-    color: #555;      /* Cinza médio-escuro */
-    text-align: center; /* Centralizado no card */
+    font-weight: 500;     
+    text-align: center; 
 }
 
 body.dark .linha-cadastro {
-    color: #bbb; /* Cinza claro no dark mode */
+    color: #FFF;
 }
 
-/* Botão "Cadastre-se agora!" estilizado como link */
 .linha-cadastro button {
-    font-family: var(--text-font);
-    font-size: 13px;
-    font-weight: 700;           /* Bold — se destaca do texto ao redor */
-    color: #3ecec4;             /* Teal — cor secundária do Memora */
-    text-decoration: underline; /* Sublinhado de link */
-    transition: color 0.2s;    /* Transição suave */
-    background: none;           /* Sem fundo */
-    border: none;               /* Sem borda */
-    cursor: pointer;            /* Cursor de mãozinha */
+    font-weight: 700;           
+    color: #3ecec4;             
+    text-decoration: underline;  
+    background: none;           
+    border: none;         
+    cursor: pointer;      
 }
 
 .linha-cadastro button:hover {
-    color: #ec4899; /* Rosa ao hover — mudança de cor chamativa */
+    color: #ec4899; 
 }
 
 
-/* ================================================
-   10. MODAIS
-   Dois modais no projeto: Esqueceu Senha + Cadastro.
-   Cada modal tem: overlay escuro + card branco.
-   ================================================ */
-
-/* Overlay: camada escurecida que cobre toda a tela */
 .modal-overlay {
-    display: none;           /* Oculto por padrão — exibido pela classe .aberto */
-    position: fixed;         /* Fixed: cobre toda a viewport independente do scroll */
-    inset: 0;                /* Atalho para top:0; right:0; bottom:0; left:0 — cobre tudo */
-    background: rgba(0, 0, 0, 0.5); /* Fundo preto com 50% de opacidade */
-    z-index: 100;            /* Acima de todo o conteúdo da página */
-    align-items: center;     /* Centraliza o .modal verticalmente (só ativo com display:flex) */
-    justify-content: center; /* Centraliza o .modal horizontalmente */
-    backdrop-filter: blur(3px); /* Desfoca levemente o conteúdo atrás do overlay */
+    display: none;           
+    position: fixed;        
+    inset: 0;                
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 100;           
+    align-items: center;     
+    justify-content: center; 
+    backdrop-filter: blur(3px); 
 }
 
-/* Quando o JS adiciona a classe .aberto, o overlay torna-se visível */
+
 .modal-overlay.aberto {
-    display: flex; /* Flex para centralizar o .modal filho */
+    display: flex; 
 }
 
-/* Card branco interno do modal */
 .modal {
-    background: #ffffff;   /* Fundo branco no modo claro */
-    border-radius: 18px;   /* Cantos arredondados ligeiramente menores que o card principal */
-    padding: 32px 28px;    /* Espaçamento interno: 32px vertical | 28px horizontal */
-    width: 90%;            /* 90% da largura da viewport em telas pequenas */
-    max-width: 350px;      /* Não cresce além de 350px em telas largas */
-    position: relative;    /* relative: necessário para o botão X (position:absolute) se posicionar corretamente */
-    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.25); /* Sombra mais intensa que o card principal */
-    display: flex;         /* Flex para empilhar os elementos internos */
-    flex-direction: column; /* Empilha verticalmente */
-    gap: 12px;             /* Espaço de 12px entre cada filho do modal */
+    background: #ffffff;  
+    border-radius: 18px;   
+    padding: 32px 28px;    
+    width: 90%;           
+    max-width: 350px;      
+    position: relative;    
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.25); 
+    display: flex;         
+    flex-direction: column; 
+    gap: 12px;             
 }
 
 body.dark .modal {
-    background: #3a3a3a; /* Fundo cinza escuro no dark mode */
+    background: #3a3a3a;
 }
 
-/* Título do modal (h2) */
+
 .modal h2 {
-    font-family: var(--title-font); /* Fonte de título definida no global.css */
-    font-weight: 700;               /* Bold */
-    font-size: 20px;                /* Tamanho de título médio */
-    color: #2d2d2d;                 /* Cinza escuro no modo claro */
+    font-weight: 700;              
+    font-size: 20px;                
+    color: #2d2d2d;               
 }
 
 body.dark .modal h2 {
-    color: #f0f0f0; /* Quase branco no dark mode */
+    color: #f0f0f0; 
 }
 
-/* Texto descritivo/instrucional do modal (p) */
 .modal p {
-    font-family: var(--text-font);
     font-size: 14px;
-    color: #555;       /* Cinza médio — menos destaque que o título */
-    margin-top: -4px;  /* Aproxima do título acima */
+    color: #555;      
+    margin-top: -4px;
 }
 
 body.dark .modal p {
-    color: #bbb; /* Cinza claro no dark mode */
+    color: #bbb; 
 }
 
-/* Botão X para fechar o modal */
+
 .modal-fechar {
-    position: absolute; /* Posiciona em relação ao .modal (que tem position:relative) */
-    top: 12px;          /* 12px do topo do card do modal */
-    right: 16px;        /* 16px da direita do card do modal */
-    font-family: var(--text-font);
+    position: absolute; 
+    top: 12px;          
+    right: 16px;        
     font-size: 16px;
     font-weight: 700;
-    color: #999;        /* Cinza claro — botão secundário, não deve chamar muita atenção */
-    background: none;
+    color: #999;     
     border: none;
     cursor: pointer;
-    transition: color 0.2s;
 }
 
 .modal-fechar:hover {
-    color: #ec4899; /* Rosa ao hover — feedback de interação */
+    color: #ec4899;
 }
 
-/* Inputs dentro dos modais */
 .modal-input {
-    width: 100%;                   /* Ocupa toda a largura do modal */
-    padding: 10px 16px;            /* Espaçamento interno: 10px vertical | 16px horizontal */
-    border: 2px solid #3ecec4;     /* Borda teal de 2px (levemente mais fina que os inputs principais) */
-    border-radius: 50px;           /* Totalmente arredondado */
-    font-family: var(--text-font);
+    width: 100%;                  
+    padding: 10px 16px;            
+    border: 2px solid #3ecec4;    
+    border-radius: 50px;           
     font-size: 14px;
-    outline: none;                 /* Remove outline padrão — usa box-shadow customizado no focus */
-    background: #ffffff;           /* Fundo branco */
-    color: #2d2d2d;                /* Texto cinza escuro */
-    transition: box-shadow 0.2s;  /* Transição suave no foco */
-    box-sizing: border-box;        /* Garante que padding+border não extrapolem o width:100% */
-}
-
-.modal-input:focus {
-    box-shadow: 0 0 0 3px rgba(62, 206, 196, 0.25); /* Anel de foco teal ao focar no input */
+    outline: none;                
+    background: #ffffff;          
+    color: #2d2d2d;                
+    box-sizing: border-box;     
 }
 
 body.dark .modal-input {
-    background: #2d2d2d; /* Fundo cinza médio-escuro no dark mode */
-    color: #f0f0f0;      /* Texto claro no dark mode */
+    background: #2d2d2d; 
+    color: #f0f0f0; 
 }
 
-/* Botão principal dos modais (Enviar / Criar conta) */
 .btn-modal {
-    width: 100%;                     /* Ocupa toda a largura do modal */
-    padding: 11px;                   /* Levemente menor que o .btn-entrar */
-    background-color: #ec4899;       /* Rosa — mesma cor do botão ENTRAR para consistência */
-    color: #ffffff;                  /* Texto branco */
-    font-family: var(--text-font);
-    font-weight: 800;                /* ExtraBold */
-    font-size: 14px;                 /* Ligeiramente menor que o ENTRAR */
-    letter-spacing: 1px;             /* Menos espaçamento que o ENTRAR — proporcional ao tamanho */
-    border-radius: 50px;             /* Totalmente arredondado */
-    border: none;
+    width: 100%;                     
+    padding: 11px;                   
+    background-color: #ec4899;       
+    color: #ffffff;                  
+    font-weight: 800;                                      
+    border-radius: 50px;      
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35); /* Glow rosa mais suave que o ENTRAR */
-    transition: transform 0.15s, box-shadow 0.15s, background-color 0.2s;
-    margin-top: 4px;                 /* Pequeno espaço acima do botão */
+    margin-top: 4px;
 }
 
 .btn-modal:hover {
-    background-color: #db2777;     /* Rosa mais escuro no hover */
-    transform: translateY(-2px);   /* Efeito de levitar */
-    box-shadow: 0 7px 18px rgba(236, 72, 153, 0.45); /* Sombra maior no hover */
+    background-color: #db2777;    
 }
 
-
-/* ================================================
-   11. TOAST DE FEEDBACK (MENSAGEM)
-   Aparece na parte inferior da tela por 3 segundos.
-   Gerenciado pelo login.js via mostrarMensagem().
-   ================================================ */
 
 .mensagem {
-    display: none;              /* Oculto por padrão */
-    position: fixed;            /* Fixed: sempre visível independente do scroll */
-    bottom: 28px;               /* 28px acima da borda inferior da tela */
-    left: 50%;                  /* Inicia no centro horizontal */
-    transform: translateX(-50%); /* Ajuste para centralizar (compensa o left:50%) */
-    padding: 11px 26px;         /* Espaçamento interno generoso para o texto respirar */
-    border-radius: 50px;        /* Totalmente arredondado — pill shape */
-    font-family: var(--text-font);
-    font-size: 14px;
-    font-weight: 600;           /* SemiBold — legível mas não gritante */
-    color: #ffffff;             /* Texto branco em qualquer variação de cor */
-    background-color: #3ecec4; /* Teal — cor de sucesso/neutra */
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); /* Sombra para destacar do conteúdo */
-    z-index: 200;               /* Acima dos modais (z-index 100) */
-    white-space: nowrap;        /* Impede quebra de linha no texto do toast */
+    display: none;              
+    position: fixed;            
+    bottom: 28px;               
+    left: 50%;                  
+    transform: translateX(-50%); 
+    padding: 11px 26px;         
+    border-radius: 50px;                  
+    color: #ffffff;             
+    background-color: #3ecec4; 
+    z-index: 200;               
+    white-space: nowrap;        
 }
 
-/* Quando o JS adiciona .visivel, o toast aparece com animação */
 .mensagem.visivel {
-    display: block;               /* Torna visível */
-    animation: aparecer 0.3s ease; /* Animação de entrada definida em @keyframes abaixo */
+    display: block;               
+    animation: aparecer 0.3s ease; 
 }
 
-/* Variação de erro — fundo rosa em vez de teal */
 .mensagem.erro {
-    background-color: #ec4899; /* Rosa — cor de erro/alerta */
-}
-
-/* Animação do toast: sobe levemente enquanto aparece */
-@keyframes aparecer {
-    from {
-        opacity: 0;                              /* Começa invisível */
-        transform: translate(-50%, 12px);        /* Começa 12px abaixo da posição final */
-    }
-    to {
-        opacity: 1;                              /* Termina totalmente visível */
-        transform: translate(-50%, 0);           /* Termina na posição correta */
-    }
-}
-
-
-/* ================================================
-   12. RESPONSIVO
-   Ajustes para telas com largura menor que 480px
-   (smartphones menores como iPhone SE, Moto G).
-   ================================================ */
-@media (max-width: 480px) {
-    .card {
-        padding: 28px 22px 24px; /* Reduz padding lateral de 44px para 22px em telas estreitas */
-    }
-    .logo {
-        width: 180px; /* Reduz logo de 240px para 180px em telas pequenas */
-    }
+    background-color: #ec4899; 
 }
