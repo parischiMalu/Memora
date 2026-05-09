@@ -16,7 +16,7 @@ export class GameSession {
         this.player = player;
         this.temaId = temaId;
         this.nivelId = nivelId;
-        this.tabuleiro = GameService.gerarTabuleiro(temaId, nivelId); // embaralha as cartas
+        this.tabuleiro = GameService.gerarTabuleiro(temaId, nivelId); // embaralha as cartas quando inicia o GameSession
         this.inicio = Date.now();
         this.fim = null;
         this.tempoFinal = null;
@@ -42,7 +42,7 @@ export class GameSession {
 
         return {
             tempo: this.tempoFinal,
-            novoRecorde
+            novoRecorde: novoRecorde
         };
     }
 }

@@ -90,7 +90,6 @@ export class Player extends Usuarios {
 
             // Incrementa a quantidade de partidas do jogador
             this.totalPartidasConcluidas++;
-            // Retorna o novo recorde
             return true; 
         }
 

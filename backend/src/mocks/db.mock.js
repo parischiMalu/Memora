@@ -17,6 +17,6 @@ jogadoresMock[1].atualizarRecorde(1, 2, 60); // Seu José:   Frutas  Médio  em 
 
 // Admnistradores pré-cadastrados
 export const adminsMock = [
-    new Admin("Professora Ana", "ana@utfpr.edu.br", "admin123"),
+    new Admin("Professora Ana", "profana@utfpr.edu.br", "admin123"),
 ];
 
