@@ -1,3 +1,4 @@
+
 /* itens da header */
 
 .header{
@@ -75,15 +76,14 @@ body.dark .menu-dropdown a:hover {
     position: relative;
 }
 .tema-selector button{
-    font-size: x-large;
+    font-size: 30px;
     font-weight: bold;
     font-family: var(--text-font);
     color: #ec4899;
 }
 
 .tema-selector #temas{
-    width: auto;
-    max-width: 130px;
+    width: 200px;
     color: #545454;
     position: absolute;
     background-color: #d9d9d9;
@@ -108,7 +108,7 @@ body.dark .menu-dropdown a:hover {
     max-width: 1200px;
     height: auto;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 20px;
 }
 .grid-jogo{
@@ -135,34 +135,110 @@ body.dark .menu-dropdown a:hover {
     position: absolute;
     background-size: cover;
     background-position: center;
+    transition: all 400ms ease;
 }
 .front{
     transform: rotateY(180deg) ;
+    border-radius: 30px;
 }
 .back{
     background-image: url(../assets/images/Frame\ 3.png);
     backface-visibility: hidden;
 }
 
-.card:hover{
+.revela-carta{
     transform: rotateY(180deg);
 }
 
+.disabled-carta{
+    filter: saturate(0);
+    opacity: 0.8;
+}
 
 .timer{
     display: flex;
     flex-direction: column; 
     align-items: center;
+    font-size: 35px;
 }
 
 /* versão dark da área do jogo */
 body.dark .tema-selector #temas{
-    background-color: #333;
+    background-color: #535353;
 }
 body.dark .tema-selector #temas li{
     color: #fff;
 }
 body.dark .tema-selector #temas li:hover {
     background-color: #7c7c7c;
+    color: #fff;
+}
+body.dark .tabuleiro{
+    background-color: #545454;
+}
+
+
+
+/* fim de jogo  */
+
+/* CSS */
+.overlay-escuro {
+    display: none;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9998;
+}
+
+
+.fim-de-jogo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: auto;
+    padding: 20px 0;
+    background-color: #fff;
+    border-radius: 20px;
+    z-index: 9999;
+}
+
+.fim-de-jogo div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 20px;
+}
+
+#fim-jogador{
+    font-size: 25px;
+    font-weight: bold;
+    color: #ec4899;
+}
+
+.reiniciar{
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #ec4899;
+    box-shadow:  1px 1px 6px gray;
+    width: 200px;
+    height: auto;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+body.dark .fim-de-jogo{
+    background-color: #535353;
     color: #fff;
 }

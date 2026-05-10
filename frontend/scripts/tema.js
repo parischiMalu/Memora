@@ -1,22 +1,42 @@
-const tema = document.getElementById('tema-btn');
+const TEMAS = {
+    'Cornélio Procópio': 'cornelio',
+    'Informática': 'informatica',
+};
+
+let temaSelecionado = 'informatica';
+let onTemaChange = null;
+
+const temaBtn = document.getElementById('tema-btn');
 const temasMenu = document.getElementById('temas');
 
-tema.addEventListener('click', () => {
+temaBtn.addEventListener('click', (event) => {
     event.stopPropagation();
     const aberto = temasMenu.style.display === 'block';
     temasMenu.style.display = aberto ? 'none' : 'block';
 });
 
 window.addEventListener('click', (event) => {
-    const clicouMenu = temasMenu.contains(event.target);
-    if (!clicouMenu) {
+    if (!temasMenu.contains(event.target)) {
         temasMenu.style.display = 'none';
     }
 });
 
 temasMenu.addEventListener('click', (event) => {
     if (event.target.tagName === 'LI') {
-        const temaSelecionado = event.target.innerText;;
-        console.log(`Tema selecionado: ${temaSelecionado}`);
+        const nomeClicado = event.target.innerText.trim();
+        const id = TEMAS[nomeClicado];
+
+        if (id) { 
+            temaSelecionado = id;
+            temasMenu.style.display = 'none';
+            console.log(`Tema selecionado: ${temaSelecionado}`);
+
+            if (onTemaChange) onTemaChange(temaSelecionado);
+        }
+        console.log(temaSelecionado)
     }
 });
+
+export const getTema = () => temaSelecionado;
+
+export const setOnTemaChange = (fn) => { onTemaChange = fn; };
