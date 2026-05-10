@@ -1,4 +1,5 @@
-//Configurações de níveis
+//Configurações de níveis 
+// NÃO USADO POR AGORA
 
 export const NIVEIS = {
     FACIL: { id: 1, pares: 4, nome: "Iniciante" },   // 8 cartas

@@ -12,19 +12,19 @@ export class RankingService {
      * Retorna o ranking de uma combinação específica de tema + nivel.
      * Filtra apenas jogadores que jogaram aquela combinação exata.
      */
-    static getRankingPorTemaENivel(temaId, nivelId) {
+    static getRankingPorTema(temaId /*, nivelId*/) {
         // Encontra o tema pelo id
         const tema  = TEMAS.find(t => t.id === temaId);
 
         // Encontra o nivel pelo id
-        const nivel = Object.values(NIVEIS).find(n => n.id === nivelId);
+        //const nivel = Object.values(NIVEIS).find(n => n.id === nivelId);
 
         // Lança um erro caso não tenha encontrado o tema ou o nivel
         if (!tema)  throw new Error(`Tema ${temaId} não encontrado.`);
-        if (!nivel) throw new Error(`Nível ${nivelId} não encontrado.`);
+        //if (!nivel) throw new Error(`Nível ${nivelId} não encontrado.`);
 
         // Escreve a combinação da chave
-        const chave = `${temaId}-${nivelId}`;
+        const chave = `${temaId}`;
 
         const ranking = jogadoresMock
             .filter(j => j.recordesPessoais[chave]?.melhorTempo != null)
@@ -35,14 +35,15 @@ export class RankingService {
             }))
             .sort((a, b) => parseInt(a.melhorTempo) - parseInt(b.melhorTempo));
 
-        return { tema: tema.nome, nivel: nivel.nome, ranking };
+        return { tema: tema.nome, /*nivel: nivel.nome,*/ ranking };
     }
 
     /**
      * Retorna o ranking geral agrupado por todas as combinações
      * de tema + nível existentes.
      */
-    static getRankingGeral() {
+
+    /*static getRankingGeral() {
         const chavesUnicas = new Set(
             jogadoresMock.flatMap(j => Object.keys(j.recordesPessoais))
         );
@@ -51,5 +52,5 @@ export class RankingService {
             const [temaId, nivelId] = chave.split('-').map(Number);
             return RankingService.getRankingPorTemaENivel(temaId, nivelId);
         });
-    }
+    }*/
 }
