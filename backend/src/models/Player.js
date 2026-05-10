@@ -1,6 +1,6 @@
 import { Usuarios } from './Usuarios.js';
 import { TEMAS } from '../mocks/temas.mock.js';
-import { NIVEIS } from './Configuracoes.js';
+//import { NIVEIS } from './Configuracoes.js';
 
 /**
  * Representa um jogador do sistema.
@@ -36,10 +36,10 @@ export class Player extends Usuarios {
      * @param {number} tempoGasto - Tempo final da partida em segundos
      * @returns {boolean} - true se um novo recorde foi registrado
      */
-    atualizarRecorde(temaId, nivelId, tempoGasto) {
+    atualizarRecorde(temaId,/* nivelId*/ tempoGasto) {
         //Essa string chave garante que o recorde do nível Fácil nunca seja sobrescrito por um 
         // tempo do nível Difícil.
-        const chave = `${temaId}-${nivelId}`; // ex: "1-2" = Frutas Médio
+        const chave = `${temaId}`; // ex: "1-2" = Frutas Médio
 
         //O código vai até o objeto recordesPessoais (atributo dessa classe ) e verifica se 
         // já existe algo nessa variável, exemplo, se "1-2" não existir retorna undefined
@@ -64,7 +64,7 @@ export class Player extends Usuarios {
             // Para cada item (n) que olhar no array, verifique se o id dele é igual 
             // ao nivelId que eu te dei, se não retorna undefined
             // Fazemos isso para que, na hora de salvar o recorde, possamos pegar o nome do nível, como 'FÁCIL'
-            const nivel = Object.values(NIVEIS).find(n => n.id === nivelId);
+            //const nivel = Object.values(NIVEIS).find(n => n.id === nivelId);
 
             // Salva o objeto recordesPessoais
             this.recordesPessoais[chave] = {
@@ -74,7 +74,7 @@ export class Player extends Usuarios {
                 // O ?. significa: “Acesse nome só se tema existir"
                 // O ?? significa: “Se o valor da esquerda for null ou undefined, usa o da direita"
                 nomeTema:  tema?.nome  ?? `Tema ${temaId}`,
-                nomeNivel: nivel?.nome ?? `Nível ${nivelId}`,
+                //nomeNivel: nivel?.nome ?? `Nível ${nivelId}`,
                 data: new Date()
             };
 

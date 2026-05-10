@@ -5,6 +5,7 @@ import { TemaService }    from './services/TemaService.js';
 import { RankingService } from './services/RankingService.js';
 import { GameSession }    from './models/GameSession.js';
 import {TEMAS}            from './mocks/temas.mock.js'
+import { Player } from './models/Player.js';
 
 console.log("╔══════════════════════════════════════╗");
 console.log("║    JOGO DA MEMÓRIA - PROJETO TEDI    ║");
@@ -31,7 +32,7 @@ console.log(TemaService.listarTemas());
 
 // 4 INICIANDO PARTIDA 
 console.log("\nIniciar partida"); // utilizamos o novoJogador (nome = "Pedro Paulo") que acabamos de criar
-const minhaPartida = new GameSession(novoJogador, 3, 3); // tabuleiro é gerado automaticamente quando instanciamos (atributo tabuleiro)
+const minhaPartida = new GameSession(novoJogador, 3); // tabuleiro é gerado automaticamente quando instanciamos (atributo tabuleiro)
 console.log("Tabuleiro gerado: ");
 console.log(minhaPartida.tabuleiro);
 
@@ -41,5 +42,18 @@ minhaPartida.inicio = Date.now() - 60000; // Utilizado apenas como exemplo (dura
 const resultados = minhaPartida.finalizarPartida();
 console.log("Tempo final: ", resultados.tempo);
 console.log("Novo recorde: ", resultados.novoRecorde);
+
+const partida2 = new GameSession(novoJogador, 3);
+partida2.inicio = Date.now() - 35000;
+const resultados2 = partida2.finalizarPartida();
+console.log("Tempo final: ", resultados2.tempo);
+console.log("Novo recorde: ", resultados2.novoRecorde);
+
+console.log(novoJogador.getResumo());
+
+
+
+
+
 
 // 5 GERAR RANKING  ***PRECISO TERMINAR****
