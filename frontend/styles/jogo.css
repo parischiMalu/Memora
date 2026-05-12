@@ -46,19 +46,6 @@
     border-radius: 5px;
 }
 
-
-/* versão dark da header */
-body.dark .menu-dropdown {
-    background-color: #333;
-}
-body.dark .menu-dropdown a{
-    color: #fff;
-}
-body.dark .menu-dropdown a:hover {
-    background-color: #7c7c7c;
-    color: #fff;
-}
-
 /* area do jogo */
 .area-jogo {
     width: 100%;
@@ -69,6 +56,9 @@ body.dark .menu-dropdown a:hover {
     padding: 20px;
     color: #fff;
 }
+
+/* seletor de tema */
+
 .tema-selector, .timer{
     padding-top: 50px;
 }
@@ -95,7 +85,8 @@ body.dark .menu-dropdown a:hover {
 }
 
 .tema-selector #temas li{
-    padding: 5px 10px;
+    font-size: 20px;
+    padding: 10px 15px;
     color: #333;
 }
 
@@ -105,6 +96,7 @@ body.dark .menu-dropdown a:hover {
     border-radius: 5px;
 }
 
+/* jogo */
 .tabuleiro {
     max-width: 1200px;
     height: auto;
@@ -156,6 +148,8 @@ body.dark .menu-dropdown a:hover {
     opacity: 0.8;
 }
 
+/* timer */
+
 .timer{
     display: flex;
     flex-direction: column; 
@@ -163,26 +157,9 @@ body.dark .menu-dropdown a:hover {
     font-size: 35px;
 }
 
-/* versão dark da área do jogo */
-body.dark .tema-selector #temas{
-    background-color: #535353;
-}
-body.dark .tema-selector #temas li{
-    color: #fff;
-}
-body.dark .tema-selector #temas li:hover {
-    background-color: #7c7c7c;
-    color: #fff;
-}
-body.dark .tabuleiro{
-    background-color: #545454;
-}
-
-
 
 /* fim de jogo  */
 
-/* CSS */
 .overlay-escuro {
     display: none;
     position: fixed; 
@@ -238,6 +215,37 @@ body.dark .tabuleiro{
     padding: 10px;
     border-radius: 20px;
 }
+
+
+
+/* versão dark da header */
+body.dark .menu-dropdown {
+    background-color: #333;
+}
+body.dark .menu-dropdown a{
+    color: #fff;
+}
+body.dark .menu-dropdown a:hover {
+    background-color: #7c7c7c;
+    color: #fff;
+}
+
+/* versão dark da área do jogo */
+body.dark .tema-selector #temas{
+    background-color: #333;
+}
+body.dark .tema-selector #temas li{
+    color: #fff;
+}
+body.dark .tema-selector #temas li:hover {
+    background-color: #7c7c7c;
+    color: #fff;
+}
+body.dark .tabuleiro{
+    background-color: #545454;
+}
+
+/* versão dark do fim de jogo */
 
 body.dark .fim-de-jogo{
     background-color: #535353;
