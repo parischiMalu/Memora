@@ -155,6 +155,13 @@ const criaCarta = (item, tema) => {
     return card
 };
 
+// Reinicia ao clicar no botão
+btnReiniciar.addEventListener('click', () => {
+    overlayEscuro.style.display = 'none';
+    modalParabens.style.display = 'none';
+    loadGame();
+});
+
 
 const loadGame = () => {
 
@@ -174,13 +181,6 @@ const loadGame = () => {
         grid.appendChild(criaCarta(item, tema));
     });
 };
-
-// Reinicia ao clicar no botão
-btnReiniciar.addEventListener('click', () => {
-    overlayEscuro.style.display = 'none';
-    modalParabens.style.display = 'none';
-    loadGame();
-});
 
 // Reinicia o jogo quando o usuário troca de tema
 setOnTemaChange( () => {
