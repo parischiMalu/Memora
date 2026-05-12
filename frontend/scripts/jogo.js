@@ -1,6 +1,9 @@
-import { getTema, setOnTemaChange } from './tema.js';
 
 
+// importa o tema selecionado pelo usuário em tema.js
+import { getTema, setOnTemaChange } from './tema.js'; 
+
+// pega os elementos necessários do jogo.html
 const grid = document.querySelector('.grid-jogo')
 const seconds = document.getElementById('seconds');
 const minutes = document.getElementById('minutes');
@@ -11,52 +14,25 @@ const segFinal = document.getElementById('seg-final');
 const tentativasFinal = document.getElementById('tentativas-final');
 const btnReiniciar = document.querySelector('.reiniciar');
 
-// temas
-const cornelio = [
-    'Carnaval',
-    'Centro',
-    'Cidade',
-    'Cristo',
-    'Entrada',
-    'Faccrei',
-    'Hospital',
-    'Lago',
-    'Mapa',
-    'Santuario',
-    'UENP',
-    'UTFPR',
-]
-
-const informatica = [
-    'Arquivos',
-    'Cadeira',
-    'Chrome',
-    'Configurações',
-    'CPU',
-    'Fone',
-    'Impressora',
-    'Monitor',
-    'Mouse',
-    'Roteador',
-    'Teclado',
-    'Webcam',
-];
-
+// biblioteca de temas com cada carta
 const ITENS_TEMAS = {
-    cornelio, informatica,
+    cornelio: [ 'Carnaval', 'Centro', 'Cidade', 'Cristo', 'Entrada', 
+        'Faccrei', 'Hospital', 'Lago', 'Mapa', 'Santuario', 'UENP', 'UTFPR'],
+
+    informatica: [ 'Arquivos', 'Cadeira', 'Chrome', 'Configurações', 
+        'CPU', 'Fone', 'Impressora', 'Monitor', 'Mouse', 'Roteador', 'Teclado', 'Webcam']
 };
 
 // variaveis globais 
-let tentativas = 0;
-let firstCard = '';
-let secondCard = '';
-let timer = null;        
+let tentativas = 0;       // incrementa a cada par de cartas clicadas
+let firstCard = '';       // recebe a primeira carta clicada
+let secondCard = '';      // recebe a segunda carta clicada
+let timer = null;         // inicia o timer vazio   
 let totalSeconds = 0;     // controla o tempo total em segundos
 let timerStarted = false; // garante que só começa uma vez
 
 // Formata timer com 2 casas (5 -> "05")
 const pad = (n) => String(n).padStart(2, '0');
-
 
 // cria as um elemento que recebe como parâmetro o tipo de
 // elemento html e adiciona um classname que tambem foi recebido 
@@ -67,7 +43,6 @@ const createElement = (tag, className) => {
 
     return element;
 }
-
 
 const resetTimer = () => {
     clearInterval(timer);
@@ -94,7 +69,6 @@ const startTimer = () => {
 }
 
 
-
 const checaEndGame = () => {
     const disabledCards = document.querySelectorAll('.disabled-carta');
 
@@ -109,8 +83,6 @@ const checaEndGame = () => {
         modalParabens.style.display = 'flex';
     }
 };
-
-
 
 
 const checaCartas = () => {
@@ -139,6 +111,7 @@ const checaCartas = () => {
         
     }
 };
+
 
 const revelaCarta = ({ target }) => {
 
