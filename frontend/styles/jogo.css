@@ -15,7 +15,7 @@
 }   
 
 .header #perfil{
-    width: 50px;
+    width: 80px;
     height: auto;
 }
 
@@ -35,8 +35,9 @@
 }
 .menu-dropdown a {
     display: block;
-    padding: 5px 10px;
+    padding: 5px 20px;
     color: #333;
+    font-size: 25px;
 }
 
 .menu-dropdown a:hover {
