@@ -8,7 +8,7 @@ import { TEMAS } from '../mocks/temas.mock.js';
 
 export class TemaService {
     // Métodos static são usados porque não dependem de um objeto específico,
-    // podendo ser chamados diretamente pela classe como TemaService.listarTemas() por exemplo
+    // podendo ser chamados diretamente pela classe, como TemaService.listarTemas() por exemplo.
     /**
      * Retorna todos os temas disponíveis no sistema.
      * @returns {object[]}
@@ -38,8 +38,7 @@ export class TemaService {
     }
 
     /**
-     * Cadastra um novo tema no sistema (ação de administrador).
-     * Exige no mínimo 12 cartas
+     * Exige 12 cartas
      * @param {string}   nome   - Nome do tema 
      * @param {string[]} cartas - Array com os emojis/identificadores das cartas
      * @returns {object} - o novo tema criado
@@ -67,7 +66,6 @@ export class TemaService {
     }
 
     /**
-     * Remove um tema pelo ID (ação de administrador).
      * @param {number} id
      * @returns {object} - o tema que foi removido
      */

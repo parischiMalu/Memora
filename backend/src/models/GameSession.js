@@ -7,7 +7,7 @@ import { Player } from './Player.js';
  */
 
 export class GameSession {
-    constructor(player, temaId /*, nivelId*/) {
+    constructor(player, temaId) {
         // Garante que apenas um jogador, e não o admin, possa iniciar uma partida
         if (!(player instanceof Player)) {
             throw new Error("Apenas jogadores podem iniciar uma partida.");
@@ -15,8 +15,7 @@ export class GameSession {
 
         this.player = player;
         this.temaId = temaId;
-        //this.nivelId = nivelId;
-        this.tabuleiro = GameService.gerarTabuleiro(temaId/*, nivelId*/); // embaralha as cartas quando inicia o GameSession
+        this.tabuleiro = GameService.gerarTabuleiro(temaId); // embaralha as cartas quando inicia o GameSession
         this.inicio = Date.now();
         this.fim = null;
         this.tempoFinal = null;
@@ -37,8 +36,7 @@ export class GameSession {
         this.encerrada  = true;
 
         // Avisa o Player para verificar e registrar um possível novo recorde
-        // Passa temaId e nivelId para que o recorde seja salvo pela combinação tema+nível
-        const novoRecorde = this.player.atualizarRecorde(this.temaId, /*this.nivelId*/ this.tempoFinal);
+        const novoRecorde = this.player.atualizarRecorde(this.temaId, this.tempoFinal);
 
         return {
             tempo: this.tempoFinal,

@@ -1,37 +1,26 @@
 // Implementa a classe responsável pela lógica do jogo
 
 import { TEMAS } from '../mocks/temas.mock.js';
-// import { NIVEIS } from '../models/Configuracoes.js';
 
 export class GameService {
     /**
-     * Gera um novo tabuleiro embaralhado baseado no tema e dificuldade.
-     * @param {number} temaId 
-     * @param {number} nivelId 
+     * Gera um tabuleiro embaralhado para uma partida.
+     * @param {number} temaId - Identificador único do tema.
+     * @returns {Array} Array de cartas duplicadas e embaralhadas.
      */
-    static gerarTabuleiro(temaId /*nivelId*/) {
+    static gerarTabuleiro(temaId) {
         // Busca o tema pelo id, retorna undefined se não encontrado
         const tema = TEMAS.find(t => t.id === temaId);
 
-        // Converte NIVEIS em um array com os valores do objeto e busca o primeiro nível cujo id 
-        // seja igual ao nivelId, retorna undefined caso não encontrado
-        // const nivel = Object.values(NIVEIS).find(n => n.id === nivelId);
-
-        // Se o tema ou o nivel não foram encontrados (undefined), lance um erro
-        if (!tema /*|| !nivel*/) {
+        // Se o tema não foi encontrado (undefined), lance um erro
+        if (!tema) {
             throw new Error("Tema inválido.");
         }
 
-        // 1. Seleciona a quantidade de cartas necessária para o nível (ex: 4 pares = 4 cartas)
-        // O slice copia uma parte de um array sem alterar o original, 
-        // exemplo: pegue as cartas do índice 0 até nivel.pares (sem incluir o final)
-        // const cartasSelecionadas = tema.cartas.slice(0, nivel.pares);
-
-        // 2. Duplica as cartas para formar pares
-        // let tabuleiro = [...cartasSelecionadas, ...cartasSelecionadas];
+        // Duplicação: Cria pares a partir da lista completa de cartas do tema
         let tabuleiro = [...tema.cartas, ...tema.cartas];
 
-        // 3. Embaralhamento com o algoritmo Fisher-Yates
+        // Embaralhamento com o algoritmo Fisher-Yates
         // Percorre o array de trás para frente
         for (let i = tabuleiro.length - 1; i > 0; i--) {
 
@@ -40,8 +29,7 @@ export class GameService {
             // Math.floor() arredonda para baixo, garantindo um número inteiro entre 0 e i (ex: 1)
             const j = Math.floor(Math.random() * (i + 1));
 
-            // Troca os elementos das posições i e j
-            // Isso move o elemento atual para uma posição aleatória do array
+            // Troca os elementos nas posições i e j
             [tabuleiro[i], tabuleiro[j]] = [tabuleiro[j], tabuleiro[i]];
         }
 
