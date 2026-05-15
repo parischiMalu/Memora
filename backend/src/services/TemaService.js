@@ -45,9 +45,9 @@ export class TemaService {
      */
     static cadastrarTema(nome, cartas) {
         // Se nome passado não existe ou se as cartas não existem ou 
-        // se a quantidade da lista de cartas for < 12, lance um erro
-        if (!nome || !cartas || cartas.length < 12) {
-            throw new Error("O tema precisa de um nome e no mínimo 12 cartas.");
+        // se a quantidade da lista de cartas for diferente de 12, lance um erro
+        if (!nome || !cartas || cartas.length !== 12) {
+            throw new Error("O tema precisa de um nome e 12 cartas.");
         }
 
         // Gera um ID único baseado no maior ID existente
