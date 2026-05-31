@@ -1,82 +1,196 @@
-// Demonstra as funcionalidades do sistema
+import express from 'express';
 
-import { AuthService }    from './services/AuthService.js';
-import { TemaService }    from './services/TemaService.js';
+// Importação dos serviços desenvolvidos
+import { AuthService } from './services/AuthService.js';
+import { TemaService } from './services/TemaService.js';
+import { GameService } from './services/GameService.js';
 import { RankingService } from './services/RankingService.js';
-import { GameSession }    from './models/GameSession.js';
-import {TEMAS}            from './mocks/temas.mock.js'
-import { Player } from './models/Player.js';
+import { GameSession } from './models/GameSession.js';
 import { jogadoresMock } from './mocks/db.mock.js';
 
-console.log("╔══════════════════════════════════════╗");
-console.log("║    JOGO DA MEMÓRIA - PROJETO TEDI    ║");
-console.log("╚══════════════════════════════════════╝\n");
+const app = express();
+const PORT = 3000;
 
-// 1. CADASTRO DE NOVO JOGADOR
-console.log("\nCadastro do jogador");
-const novoJogador = AuthService.cadastrarJogador("Pedro Paulo", "pedro@hotemail.com", "senha123");
-console.log(`O jogador: "${novoJogador.nome}" foi cadastrado com sucesso!`);
+// Para que o express consiga ler o json enviado no corpo das requisições
+app.use(express.json());
 
 
-// 2 LOGIN DE JOGADOR
-console.log("\nLogin do jogador");
-const jogador = AuthService.login("pedro@hotemail.com", "senha123");
-console.log(`Logado: ${jogador.nome} [${jogador.role}]`);
+// 1. Rotas para AuthService
 
+// POST - Realiza o login de um usuário 
+app.post('/login', (req, res) => {
+    try {
+        const { email, senha } = req.body;
+        const usuarioLogado = AuthService.login(email, senha);
+        
+        res.status(200).json(usuarioLogado.getResumo());
 
-// 3 IMPLEMENTAR TEMA
-console.log("\nCadastrando um tema");
-const cartasTeste = ["GATO", "CACHORRO", "LEAO", "TIGRE", "ELEFANTE", "MACACO", "COBRA", "COELHO", "GIRAFA", "ZEBRA", "URSO", "RAPOSA"];
-const novoTema = TemaService.cadastrarTema("Animais", cartasTeste);
-console.log(`Tema "${novoTema.nome}" cadastrado com ${novoTema.cartas.length} cartas.`);
+    } catch (error) {
+        res.status(401).json({ erro: error.message });
+    }
+});
 
+// POST - Cadastrar um novo jogador 
+app.post('/jogadores', (req, res) => {
+    try {
+        const {nome, email, senha} = req.body;
+        const usuarioCadastrado = AuthService.cadastrarJogador(nome, email, senha);
 
-// 4 LÓGICA DO EMBARALHAMENTO 
-console.log("\nLÓGICA DO TABULEIRO");
-const paresOrdenados = [...novoTema.cartas, ...novoTema.cartas];
-console.log("Pares antes do embaralhamento:");
-console.log(paresOrdenados.join(" | "));
+        res.status(201).json(usuarioCadastrado.getResumo());
 
-const sessaoTeste = new GameSession(novoJogador, novoTema.id); // tabuleiro é gerado automaticamente quando instanciamos
-console.log("\nTabuleiro após Fisher-Yates (Embaralhado):");
-console.log(sessaoTeste.tabuleiro.join(" | "));
+    } catch (error) {
+        res.status(400).json({ erro: error.message });
+    }
+});
 
+// 2. Rotas para TemaService
 
-// 5 SIMULAÇÃO DE PARTIDAS E RECORDES
-console.log("\nSIMULAÇÃO DE PERFORMANCE");
+// GET - Listar Temas
+app.get('/temas', (req, res) => {
+    try {
+        const meusTemas = TemaService.listarTemas();
 
-// Cenário A: Primeira partida (Sempre será recorde)
-console.log("Caso A: Primeira partida do jogador");
-const partida1 = new GameSession(jogador, novoTema.id);
-partida1.inicio = Date.now() - 60000; // Simula 60 segundos
-const res1 = partida1.finalizarPartida();
-console.log(`Tempo: ${res1.tempo}s | Novo Recorde: ${res1.novoRecorde}`);
+        res.status(200).json(meusTemas);
 
-// Cenário B: Quebrando o recorde (Tempo menor)
-console.log("\nCaso B: Superando o tempo anterior");
-const partida2 = new GameSession(jogador, novoTema.id);
-partida2.inicio = Date.now() - 35000; // Simula 35 segundos
-const res2 = partida2.finalizarPartida();
-console.log(`Tempo: ${res2.tempo}s | Novo Recorde: ${res2.novoRecorde}`);
+    } catch (error) {
+        res.status(500).json({ erro: error.message });
+    }
+});
 
-// Cenário C: Tempo pior (Não quebra recorde)
-console.log("\nCaso C: Tempo superior ao recorde");
-const partida3 = new GameSession(jogador, novoTema.id);
-partida3.inicio = Date.now() - 50000; // Simula 50 segundos
-const res3 = partida3.finalizarPartida();
-console.log(`Tempo: ${res3.tempo}s | Novo Recorde: ${res3.novoRecorde}`);
+// POST - Cadastrar Tema
+app.post('/temas', (req, res) => {
+    try {
+        const {nome, cartas} = req.body;
+        const novoTema = TemaService.cadastrarTema(nome, cartas);
 
+        res.status(201).json(novoTema);
 
-// 6 GERAR RECORDES PESSOAIS 
-console.log("\nDEMONSTRANDO OS RECORDES PESSOAIS");
-console.log("Resumo do Jogador:");
-console.log(jogador.getResumo());
+    } catch (error) {
+        res.status(400).json({ erro: error.message });
+    }
+});
 
+// GET - Buscar Tema Por ID
+app.get('/temas/:id', (req, res) => {
+    try {
+        const id = parseInt(req.params.id); // ID para inteiro
+        const temaEncontrado = TemaService.buscarPorId(id);
 
-// 7 GERAÇÃO DO RANKING PARA UM TEMA ESPECÍFICO (VÁRIOS JOGADORES)
-console.log("\nGERAÇÃO DO RANKING POR TEMA")
-console.log("Ranking do tema 'Cornélio':");
-const resultadoRanking = RankingService.getRankingPorTema(1);
-resultadoRanking.ranking.forEach((r, i) => {
-    console.log(`${i + 1}º - ${r.nome}: ${r.melhorTempo} em ${r.data}`);
+        res.status(200).json(temaEncontrado);
+
+    } catch (error) {
+        res.status(404).json({ erro: error.message });
+    }
+});
+
+// DELETE - Remover Tema Por ID
+app.delete('/temas/:id', (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const temaRemovido = TemaService.removerTema(id);
+
+        res.status(200).json(temaRemovido);
+
+    } catch (error) {
+        res.status(404).json({ erro: error.message });
+    }
+});
+
+// 3. Rotas para RankingService
+
+// GET - Gerar Ranking Por Tema
+app.get('/ranking/:id', (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const ranking = RankingService.getRankingPorTema(id);
+
+        res.status(200).json(ranking);
+
+    } catch (error) {
+        res.status(404).json({ erro: error.message });
+    }
+});
+
+// 4. Rotas para Player (método getResumo)
+
+// GET - Busca o resumo de um jogador específico (Dados e também recordes pessoais)
+app.get('/jogadores/:email', (req, res) => {
+    try {
+        const { email } = req.params;
+
+        // Busca instância de um jogador no banco de dados temporário
+        const jogador = jogadoresMock.find(j => j.email === email);
+
+        // Verifica a existência do jogador no banco de dados
+        if (!jogador) {
+            return res.status(404).json({ erro: "Jogador não encontrado." });
+        }
+
+        // Executa o método getResumo e retorna os dados em json
+        res.status(200).json(jogador.getResumo());
+    } catch (error) {
+        res.status(500).json({ erro: error.message });
+    }
+});
+
+// 5. Rotas para GameSession
+
+/*
+partidasAtivas, que guarda os jogos em andamento, é um protótipo que pode ser revisto/alterado depois 
+para que haja uma representação de um sistema de forma mais "realista".
+Sugestões possíveis são:
+1- Implementar o cronômetro no frontend;
+2- Criar uma tabela "mock" no banco de dados que represente as partidas em andamento (achei essa mais interessante)
+*/
+const partidasAtivas = {};
+
+// POST - Cria a sessão de jogo e envia o tabuleiro embaralhado
+app.post('/jogo/iniciar', (req, res) => {
+    try {
+        const { email, temaId } = req.body;
+
+        // Busca a instância de jogador necessária para instanciar o GameSession a partir do email
+        const jogador = jogadoresMock.find(j => j.email === email);
+        if (!jogador) {
+            return res.status(404).json({ erro: "Jogador não encontrado para iniciar a partida." });
+        }
+
+        // Instancia a classe GameSession (o que automaticamente inicia a partida)
+        const novaPartida = new GameSession(jogador, parseInt(temaId));
+
+        // Guarda as partidas ativas em um objeto com chave = email do jogador
+        partidasAtivas[email] = novaPartida;
+
+        // Responde o frontend com as cartas embaralhadas
+        res.status(201).json({
+            mensagem: "Partida iniciada!",
+            tabuleiro: novaPartida.tabuleiro
+        });
+    } catch (error) {
+        res.status(400).json({ erro: error.message });
+    }
+});
+
+// POST - Encerra o cronômetro e calcula se houve novo recorde (Finalizar partida)
+app.post('/jogo/finalizar', (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Busca as partidas ativas em partidasAtivas de acordo com o email do jogador
+        const partida = partidasAtivas[email];
+        if (!partida) {
+            return res.status(400).json({ erro: "Nenhuma partida em andamento encontrada para este jogador." });
+        }
+
+        // Chama o método finalizarPartida e obtém o resultado (tempo final e se houve novo recorde)
+        const resultado = partida.finalizarPartida();
+
+        // Limpa a partida ativa em partidasAtivas a partir do email do jogador
+        delete partidasAtivas[email];
+
+        // Devolve o resultado da partida finalizada
+        res.status(200).json(resultado);
+    } catch (error) {
+        res.status(400).json({ erro: error.message });
+    }
 });
