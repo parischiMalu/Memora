@@ -23,14 +23,20 @@ export class RankingService {
 
         const ranking = jogadoresMock
 
+            // Filtra todos os jogadores que tem recordes nesse tema
             .filter(j => j.recordesPessoais[chave]?.melhorTempo != null)
 
+            // Transforma cada jogador filtrado em um objeto contendo
+            // apenas nome, melhorTempo e data
             .map(j => ({
                 nome:        j.nome,
                 melhorTempo: `${j.recordesPessoais[chave].melhorTempo}s`,
                 data:        j.recordesPessoais[chave].data?.toLocaleDateString('pt-BR')
             }))
             
+            // O sort compara dois jogadores por vez.
+            // parseInt remove o "s" do tempo (ex: "12s" -> 12)
+            // para que a ordenação seja feita numericamente.
             .sort((a, b) => parseInt(a.melhorTempo) - parseInt(b.melhorTempo));
 
         return { tema: tema.nome, ranking };
