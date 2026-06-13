@@ -116,6 +116,11 @@ app.get('/ranking/:id', (req, res) => {
 // GET - Busca o resumo de um jogador específico (Dados e também recordes pessoais)
 app.get('/jogadores/:email', (req, res) => {
     try {
+        /*
+        trocar req.params por req.query
+
+
+        */
         const { email } = req.params;
 
         // Busca instância de um jogador no banco de dados temporário
@@ -136,11 +141,13 @@ app.get('/jogadores/:email', (req, res) => {
 // 5. Rotas para GameSession
 
 /*
+
 partidasAtivas, que guarda os jogos em andamento, é um protótipo que pode ser revisto/alterado depois 
 para que haja uma representação de um sistema de forma mais "realista".
 Sugestões possíveis são:
 1- Implementar o cronômetro no frontend;
 2- Criar uma tabela "mock" no banco de dados que represente as partidas em andamento (achei essa mais interessante)
+
 */
 const partidasAtivas = {};
 
@@ -193,4 +200,31 @@ app.post('/jogo/finalizar', (req, res) => {
     } catch (error) {
         res.status(400).json({ erro: error.message });
     }
+});
+
+
+
+// Inicia o servidor na porta definida
+app.listen(PORT, () => {
+    console.log(`Servidor do TEDI rodando na porta ${PORT}`);
+});
+
+
+
+
+
+
+// SÓ SERVE PARA TESTE, DESCONSIDERAR
+// Rota temporária para inspecionar o banco de dados em memória
+app.get('/debug/jogadores', (req, res) => {
+    res.json(jogadoresMock.map(j => j.getResumo()));
+});
+
+
+app.get('/debug/partidas', (req, res) => {
+  const resumo = {};
+  for (const [email, p] of Object.entries(partidasAtivas)) {
+    resumo[email] = { temaId: p.temaId, encerrada: p.encerrada, inicio: p.inicio };
+  }
+  res.json(resumo);
 });
