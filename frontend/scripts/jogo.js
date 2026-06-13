@@ -3,6 +3,8 @@
 // importa o tema selecionado pelo usuário em tema.js
 import { getTema, setOnTemaChange } from './tema.js'; 
 
+const BACKEND = 'http://localhost:3000'; // URL do backend
+
 // pega os elementos necessários do jogo.html
 const grid = document.querySelector('.grid-jogo')
 const seconds = document.getElementById('seconds');
@@ -13,15 +15,6 @@ const minFinal = document.getElementById('min-final');
 const segFinal = document.getElementById('seg-final');
 const tentativasFinal = document.getElementById('tentativas-final');
 const btnReiniciar = document.querySelector('.reiniciar');
-
-// biblioteca de temas com cada carta
-const ITENS_TEMAS = {
-    cornelio: [ 'Carnaval', 'Centro', 'Cidade', 'Cristo', 'Entrada', 
-        'Faccrei', 'Hospital', 'Lago', 'Mapa', 'Santuario', 'UENP', 'UTFPR'],
-
-    informatica: [ 'Arquivos', 'Cadeira', 'Chrome', 'Configurações', 
-        'CPU', 'Fone', 'Impressora', 'Monitor', 'Mouse', 'Roteador', 'Teclado', 'Webcam']
-};
 
 // variaveis globais 
 let tentativas = 0;       // incrementa a cada par de cartas clicadas
@@ -69,11 +62,19 @@ const startTimer = () => {
 }
 
 
-const checaEndGame = () => {
+const checaEndGame = async () => {
     const disabledCards = document.querySelectorAll('.disabled-carta');
 
     if (disabledCards.length === 24){
         clearInterval(timer);
+
+        const resposta = await fetch(`${BACKEND}/jogo/finalizar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: EMAIL_JOGADOR })
+        });
+
+        const resultado = await resposta.json();
 
         minFinal.innerHTML = minutes.innerHTML;
         segFinal.innerHTML = seconds.innerHTML;
@@ -139,12 +140,12 @@ const revelaCarta = ({ target }) => {
 
 
 // chama a função cria elemento e manda as informações que faltam
-const criaCarta = (item, tema) => {
+const criaCarta = (item, slug) => {
     const card = createElement('div', 'card');
     const front = createElement('div', 'face front');
     const back = createElement('div', 'face back');
 
-    front.style.backgroundImage = `url('../assets/temas/${tema}/${item}.png')`;
+    front.style.backgroundImage = `url('../assets/temas/${slug}/${item}.png')`;
 
     card.appendChild(front);
     card.appendChild(back);
@@ -163,7 +164,7 @@ btnReiniciar.addEventListener('click', () => {
 });
 
 
-const loadGame = () => {
+const loadGame = async () => {
 
     // Limpa estado anterior
     grid.innerHTML = '';
@@ -173,19 +174,22 @@ const loadGame = () => {
     resetTimer();
 
     const tema = getTema(); // ve o tema atual
-    
-    const itens = ITENS_TEMAS[tema] || informatica; // tema selecionado pelo usuario ou informatica como padrão
-    const embaralha = [...itens, ...itens].sort( () => Math.random() - 0.5 );
 
-    embaralha.forEach( (item) => {
-        grid.appendChild(criaCarta(item, tema));
+    const resposta = await fetch(`${BACKEND}/jogo/iniciar`, {
+    method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: EMAIL_JOGADOR, temaId: tema.temaId })
+    });
+
+    const dados = await resposta.json();
+
+    dados.tabuleiro.forEach( (item) => {
+        grid.appendChild(criaCarta(item, tema.slug));
     });
 };
 
 // Reinicia o jogo quando o usuário troca de tema
-setOnTemaChange( () => {
-    loadGame();
-});
+setOnTemaChange( () => loadGame());
 
 
 loadGame();
