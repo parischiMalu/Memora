@@ -1,9 +1,9 @@
 const TEMAS = {
-    'Cornélio Procópio': 'cornelio',
-    'Informática': 'informatica',
+    'Cornélio Procópio': {slug:'cornelio', temaId:1},
+    'Informática': {slug:'informatica', temaId:2},
 };
 
-let temaSelecionado = 'informatica';
+let temaSelecionado = { slug:'cornelio', temaId:1}; // valor padrão
 let onTemaChange = null;
 
 const temaBtn = document.getElementById('tema-btn');
@@ -24,12 +24,11 @@ window.addEventListener('click', (event) => {
 temasMenu.addEventListener('click', (event) => {
     if (event.target.tagName === 'LI') {
         const nomeClicado = event.target.innerText.trim();
-        const id = TEMAS[nomeClicado];
+        const tema = TEMAS[nomeClicado];
 
-        if (id) { 
-            temaSelecionado = id;
+        if (tema) { 
+            temaSelecionado = tema;
             temasMenu.style.display = 'none';
-            console.log(`Tema selecionado: ${temaSelecionado}`);
 
             if (onTemaChange) onTemaChange(temaSelecionado);
         }
