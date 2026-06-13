@@ -1,0 +1,104 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.header #logo {
+    width: 300px;
+    height: auto;
+}
+
+.btn-voltar {
+    font-size: 18px;
+    color: #ec4899;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+.btn-voltar:hover {
+    text-decoration: underline;
+}
+
+/* container principal */
+.ranking-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #333;
+}
+
+.ranking-titulo {
+    font-size: 32px;
+    color: #ec4899;
+    margin-bottom: 5px;
+}
+
+.ranking-jogador {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 30px;
+}
+
+/* lista */
+.record-lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.record-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    font-size: 16px;
+}
+
+.record-posicao {
+    font-size: 22px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.record-tema {
+    flex: 1;
+    font-weight: bold;
+    color: #ec4899;
+}
+
+.record-tempo,
+.record-tentativas {
+    color: #555;
+    min-width: 110px;
+}
+
+.record-data {
+    color: #aaa;
+    font-size: 13px;
+}
+
+/* estados vazios */
+.ranking-vazio,
+.ranking-erro {
+    text-align: center;
+    color: #aaa;
+    font-size: 18px;
+    margin-top: 60px;
+}
+
+/* dark mode */
+body.dark .btn-voltar { color: #fff; }
+body.dark .ranking-container { color: #fff; }
+body.dark .ranking-jogador   { color: #aaa; }
+body.dark .record-item       { background-color: #545454; box-shadow: none; }
+body.dark .record-tempo,
+body.dark .record-tentativas { color: #ddd; }
+body.dark .record-data       { color: #999; }

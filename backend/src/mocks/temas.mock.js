@@ -8,7 +8,7 @@ export const TEMAS = [
     {
         id: 2,
         nome: "Informatica",
-        cartas: ["Arquivos", "Cadeira", "configurações", "CPU", "Fone", "Google", "Impressora", "Monitor", "Mouse", "Roteador", "Teclado", "Webcam"]
+        cartas: ["Arquivos", "Cadeira", "configurações", "CPU", "Fone", "Chrome", "Impressora", "Monitor", "Mouse", "Roteador", "Teclado", "Webcam"]
     }
 ];
 

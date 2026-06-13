@@ -26,7 +26,7 @@ export class GameSession {
      * Finaliza a partida: calcula o tempo decorrido e atualiza o recorde do jogador.
      * @returns {{ tempo: number, novoRecorde: boolean }}
      */
-    finalizarPartida() {
+    finalizarPartida(tentativas) {
         if (this.encerrada) {
             throw new Error("Esta partida já foi encerrada.");
         }
@@ -36,7 +36,7 @@ export class GameSession {
         this.encerrada  = true;
 
         // Avisa o Player para verificar e registrar um possível novo recorde
-        const novoRecorde = this.player.atualizarRecorde(this.temaId, this.tempoFinal);
+        const novoRecorde = this.player.atualizarRecorde(this.temaId, this.tempoFinal, tentativas);
 
         return {
             tempo: this.tempoFinal,

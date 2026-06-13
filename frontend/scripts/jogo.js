@@ -5,6 +5,14 @@ import { getTema, setOnTemaChange } from './tema.js';
 
 const BACKEND = 'http://localhost:3000'; // URL do backend
 
+const EMAIL_JOGADOR = 'maria@email.com';
+//const EMAIL_JOGADOR = sessionStorage.getItem('emailJogador');
+
+// Se não tiver email salvo, volta para o login
+// if (!EMAIL_JOGADOR) {
+//     window.location.href = '../index.html';
+// }
+
 // pega os elementos necessários do jogo.html
 const grid = document.querySelector('.grid-jogo')
 const seconds = document.getElementById('seconds');
@@ -71,7 +79,10 @@ const checaEndGame = async () => {
         const resposta = await fetch(`${BACKEND}/jogo/finalizar`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: EMAIL_JOGADOR })
+            body: JSON.stringify({ 
+                email: EMAIL_JOGADOR,
+                tentativas: tentativas,
+             })
         });
 
         const resultado = await resposta.json();

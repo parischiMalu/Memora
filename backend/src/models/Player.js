@@ -24,7 +24,7 @@ export class Player extends Usuarios {
      * @param {number} tempoGasto - Tempo de conclusão em segundos.
      * @returns {boolean} - Retorna true se um novo recorde foi estabelecido.
      */
-    atualizarRecorde(temaId, tempoGasto) {
+    atualizarRecorde(temaId, tempoGasto, tentativas) {
         const chave = `${temaId}`;
         const registroAtual = this.recordesPessoais[chave];
         const recordeAtual = registroAtual?.melhorTempo ?? null;
@@ -36,6 +36,7 @@ export class Player extends Usuarios {
             // Salva o novo recorde
             this.recordesPessoais[chave] = {
                 melhorTempo: tempoGasto,
+                melhorTentativas: tentativas, // Salva o número de tentativas junto com o recorde ass. malu
                 nomeTema: tema?.nome ?? `Tema ${temaId}`,
                 data: new Date()
             };

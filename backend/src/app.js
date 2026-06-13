@@ -14,6 +14,20 @@ const PORT = 3000;
 // Para que o express consiga ler o json enviado no corpo das requisições
 app.use(express.json());
 
+// TIVE QUE ADICIONAR ISSO PARA FUNCIONAR COM O FRONTEND ASS. MALU
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Responde imediatamente requisições de "preflight" do browser
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(204);
+    }
+
+    next();
+});
+
 
 // 1. Rotas para AuthService
 
@@ -114,14 +128,19 @@ app.get('/ranking/:id', (req, res) => {
 // 4. Rotas para Player (método getResumo)
 
 // GET - Busca o resumo de um jogador específico (Dados e também recordes pessoais)
-app.get('/jogadores/:email', (req, res) => {
+// estava quebrando porque o frontend estava enviando o email como query e não como parametro, então mudei ass. malu
+app.get('/jogadores', (req, res) => {
     try {
         /*
         trocar req.params por req.query
 
 
         */
-        const { email } = req.params;
+        const { email } = req.query;
+
+        if (!email) {
+            return res.status(400).json({ erro: "Email não informado" });
+        }
 
         // Busca instância de um jogador no banco de dados temporário
         const jogador = jogadoresMock.find(j => j.email === email);
@@ -181,7 +200,9 @@ app.post('/jogo/iniciar', (req, res) => {
 // POST - Encerra o cronômetro e calcula se houve novo recorde (Finalizar partida)
 app.post('/jogo/finalizar', (req, res) => {
     try {
-        const { email } = req.body;
+        //adicionei tentativas aqui para enviar o número de tentativas do jogador 
+        // para o backend, para que o ranking seja ordenado por tempo e por tentativas
+        const { email, tentativas } = req.body;
 
         // Busca as partidas ativas em partidasAtivas de acordo com o email do jogador
         const partida = partidasAtivas[email];
@@ -190,7 +211,7 @@ app.post('/jogo/finalizar', (req, res) => {
         }
 
         // Chama o método finalizarPartida e obtém o resultado (tempo final e se houve novo recorde)
-        const resultado = partida.finalizarPartida();
+        const resultado = partida.finalizarPartida(tentativas);
 
         // Limpa a partida ativa em partidasAtivas a partir do email do jogador
         delete partidasAtivas[email];

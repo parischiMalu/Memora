@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/ranking.css">
+    <link rel="icon" type="image/x-icon" href="../assets/images/icon/memora-favicon.ico">
+    <title>Memora — Meu Ranking</title>
+</head>
+<body>
+    <section class="header">
+        <img src="../assets/images/logo.svg" alt="Logo do Memora" id="logo">
+        <a href="../pages/jogo.html" class="btn-voltar">← Voltar ao jogo</a>
+    </section>
+
+    <section class="ranking-container">
+        <h1 class="ranking-titulo">Meu Histórico</h1>
+        <p class="ranking-jogador" id="ranking-nome"></p>
+
+        <div id="ranking-lista"></div>
+
+        <p class="ranking-vazio" id="ranking-vazio" style="display:none">
+            Você ainda não completou nenhuma partida.
+        </p>
+    </section>
+
+    <button id="theme-toggle">
+        <div>
+            <img src="../assets/images/icon/sun.svg" alt="modo claro">
+            <img src="../assets/images/icon/moon.svg" alt="modo escuro">
+        </div>
+    </button>
+
+    <script src="../scripts/dark-mode.js"></script>
+    <script type="module" src="../scripts/ranking.js"></script>
+</body>
+</html>
