@@ -1,89 +1,100 @@
-import { TEMAS } from '../mocks/temas.mock.js';
+// src/services/TemaService.js
+import { pool } from "../config/db.js";
 
 /**
  * Responsável por gerenciar os temas.
- * 
- * Utiliza por enquanto o array temas do mock.
+ * Agora integrado 100% ao PostgreSQL na tabela 'jogo'.
  */
-
 export class TemaService {
-    // Métodos static são usados porque não dependem de um objeto específico,
-    // podendo ser chamados diretamente pela classe, como TemaService.listarTemas() por exemplo.
-    /**
-     * Retorna todos os temas disponíveis no sistema.
-     * @returns {object[]}
-     */
-    static listarTemas() {
-        return TEMAS;
+  /**
+   * Retorna todos os temas disponíveis no sistema.
+   * @returns {Promise<object[]>}
+   */
+  static async listarTemas() {
+    const query = "SELECT * FROM jogo ORDER BY id ASC";
+    const resultado = await pool.query(query);
+
+    // Mapeia o resultado para transformar o texto 'tipo_peca' de volta em um array de cartas
+    return resultado.rows.map((jogo) => ({
+      id: jogo.id,
+      nome: jogo.nome,
+      cartas: JSON.parse(jogo.tipo_peca),
+    }));
+  }
+
+  /**
+   * Busca um tema específico pelo seu ID.
+   * @param {number} id
+   * @returns {Promise<object>}
+   */
+  static async buscarPorId(id) {
+    const query = "SELECT * FROM jogo WHERE id = $1";
+    const resultado = await pool.query(query, [id]);
+    const tema = resultado.rows[0];
+
+    if (!tema) {
+      throw new Error(`Tema com id ${id} não encontrado.`);
     }
 
-    /**
-     * Busca um tema específico pelo seu ID.
-     * @param {number} id
-     * @returns {object}
-     */
-    static buscarPorId(id) {
-        // A cada item t presente na lista TEMAS me retorne aquele em que t.id é 
-        // exatamente igual ao id que eu te dei
-        const tema = TEMAS.find(t => t.id === id);
+    return {
+      id: tema.id,
+      nome: tema.nome,
+      cartas: JSON.parse(tema.tipo_peca),
+    };
+  }
 
-        //Se o find não encontrar, então tema = undefined e !undefined = true,
-        //nesse caso lança o erro de id não encontrado 
-        if (!tema) {
-            throw new Error(`Tema com id ${id} não encontrado.`);
-        }
-
-        // Retorna o tema se encontrado
-        return tema;
+  /**
+   * Cadastra um novo tema no sistema (ação de administrador).
+   * Exige no mínimo 12 cartas.
+   * @param {string} nome - Nome do tema
+   * @param {string[]} cartas - Array com os emojis/identificadores das cartas
+   * @returns {Promise<object>} - o novo tema criado
+   */
+  static async cadastrarTema(nome, cartas) {
+    if (!nome || !cartas || !Array.isArray(cartas) || cartas.length < 12) {
+      throw new Error(
+        "O tema precisa de um nome e no mínimo 12 cartas em formato de lista.",
+      );
     }
 
-    /**
-     * Exige 12 cartas
-     * @param {string}   nome   - Nome do tema 
-     * @param {string[]} cartas - Array com os emojis/identificadores das cartas
-     * @returns {object} - o novo tema criado
-     */
-    static cadastrarTema(nome, cartas) {
-        // Se nome passado não existe ou se as cartas não existem ou 
-        // se a quantidade da lista de cartas for diferente de 12, lance um erro
-        if (!nome || !cartas || cartas.length !== 12) {
-            throw new Error("O tema precisa de um nome e 12 cartas.");
-        }
+    // Converte o array de cartas para uma string JSON para caber na coluna TEXT
+    const tipoPecaStr = JSON.stringify(cartas);
 
-        // Gera um ID único baseado no maior ID existente
-        // Se TEMAS.lenght for maior que 0 me retorne o maior valor (Math.max()) de id do array passado + 1,
-        // onde (...TEMAS.map(t => t.id)) retorna todos os id de TEMAS, caso contrário retorne 1
-        const novoId = TEMAS.length > 0 ? Math.max(...TEMAS.map(t => t.id)) + 1 : 1;
+    const query = `
+            INSERT INTO jogo (nome, tipo_peca) 
+            VALUES ($1, $2) 
+            RETURNING *;
+        `;
+    const valores = [nome, tipoPecaStr];
 
-        // Cria o novo tema
-        const novoTema = { id: novoId, nome, cartas };
+    const resultado = await pool.query(query, valores);
+    const novoTema = resultado.rows[0];
 
-        // Joga o novo tema para o banco temporário (TEMAS)
-        TEMAS.push(novoTema);
+    return {
+      id: novoTema.id,
+      nome: novoTema.nome,
+      cartas: JSON.parse(novoTema.tipo_peca),
+    };
+  }
 
-        // Retorna o novoTema
-        return novoTema;
+  /**
+   * Remove um tema pelo ID (ação de administrador).
+   * @param {number} id
+   * @returns {Promise<object>} - o tema que foi removido
+   */
+  static async removerTema(id) {
+    const query = "DELETE FROM jogo WHERE id = $1 RETURNING *";
+    const resultado = await pool.query(query, [id]);
+    const removido = resultado.rows[0];
+
+    if (!removido) {
+      throw new Error(`Tema com id ${id} não encontrado.`);
     }
 
-    /**
-     * @param {number} id
-     * @returns {object} - o tema que foi removido
-     */
-    static removerTema(id) {
-        // TEMAS.findIndex(t => t.id === id) diz para cada elemento t no array TEMAS retorne o índice onde
-        // t.id é exatamente igual ao id que eu te passei, retorne -1 se não encontrar
-        const index = TEMAS.findIndex(t => t.id === id);
-
-        // Se o índice não for encontrado (findIndex retorna -1 nesse caso), lance um erro
-        if (index === -1) throw new Error(`Tema com id ${id} não encontrado.`);
-
-        // splice remove um item na posição do index (alterando o array original)
-        // e retorna um array com o item removido,
-        const resultado = TEMAS.splice(index, 1);
-        const removido = resultado[0];
-        
-        // Retorna o elemento removido
-        return removido
-
-    }
+    return {
+      id: removido.id,
+      nome: removido.nome,
+      cartas: JSON.parse(removido.tipo_peca),
+    };
+  }
 }

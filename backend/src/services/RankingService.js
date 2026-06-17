@@ -1,44 +1,78 @@
-import { jogadoresMock } from '../mocks/db.mock.js';
-import { TEMAS } from '../mocks/temas.mock.js';
+// src/services/RankingService.js
+import { pool } from "../config/db.js";
 
 /**
- * Responsável por gerar o ranking de jogadores.
- * O ranking é focado estritamente no melhor tempo por tema.
+ * Responsável por gerar o ranking de jogadores integrado ao PostgreSQL.
+ * O ranking é focado estritamente no melhor tempo por tema (jogo).
  */
 export class RankingService {
+  /**
+   * Retorna o ranking de um tema específico.
+   * Filtra apenas jogadores que jogaram aquele tema e pega o melhor tempo de cada um.
+   * @param {number} temaId
+   * @returns {Promise<object>}
+   */
+  static async getRankingPorTema(temaId) {
+    // 1. Verifica se o tema existe e pega o nome dele
+    const temaQuery = "SELECT nome FROM jogo WHERE id = $1";
+    const temaResult = await pool.query(temaQuery, [temaId]);
 
-    /**
-     * Retorna o ranking de um tema específico.
-     * Filtra apenas jogadores que jogaram exatamente aquele tema.
-     */
-    static getRankingPorTema(temaId) {
-        // Encontra o tema pelo id
-        const tema  = TEMAS.find(t => t.id === temaId);
-
-        // Lança um erro caso não tenha encontrado o tema.
-        if (!tema)  throw new Error(`Tema ${temaId} não encontrado.`);
-
-        // Escreve a chave
-        const chave = `${temaId}`;
-
-        const ranking = jogadoresMock
-
-            // Filtra todos os jogadores que tem recordes nesse tema
-            .filter(j => j.recordesPessoais[chave]?.melhorTempo != null)
-
-            // Transforma cada jogador filtrado em um objeto contendo
-            // apenas nome, melhorTempo e data
-            .map(j => ({
-                nome:        j.nome,
-                melhorTempo: `${j.recordesPessoais[chave].melhorTempo}s`,
-                data:        j.recordesPessoais[chave].data?.toLocaleDateString('pt-BR')
-            }))
-            
-            // O sort compara dois jogadores por vez.
-            // parseInt remove o "s" do tempo (ex: "12s" -> 12)
-            // para que a ordenação seja feita numericamente.
-            .sort((a, b) => parseInt(a.melhorTempo) - parseInt(b.melhorTempo));
-
-        return { tema: tema.nome, ranking };
+    if (temaResult.rows.length === 0) {
+      throw new Error(`Tema com id ${temaId} não encontrado.`);
     }
+    const nomeTema = temaResult.rows[0].nome;
+
+    // 2. Busca o melhor tempo de cada jogador neste tema usando DISTINCT ON
+    const rankingQuery = `
+            WITH MelhoresTempos AS (
+                SELECT DISTINCT ON (usuario_id) 
+                    usuario_id, 
+                    tempo_decorrido, 
+                    data_jogada
+                FROM partida
+                WHERE jogo_id = $1
+                ORDER BY usuario_id, tempo_decorrido ASC
+            )
+            SELECT 
+                u.nickname AS nome,
+                m.tempo_decorrido AS "melhorTempo",
+                m.data_jogada AS data
+            FROM MelhoresTempos m
+            JOIN usuario u ON m.usuario_id = u.id
+            ORDER BY m.tempo_decorrido ASC;
+        `;
+
+    const rankingResult = await pool.query(rankingQuery, [temaId]);
+
+    // 3. Formata a resposta para manter o padrão (adicionando o 's' no tempo e formatando a data)
+    const rankingFormatado = rankingResult.rows.map((r) => ({
+      nome: r.nome,
+      melhorTempo: `${r.melhorTempo}s`,
+      data: new Date(r.data).toLocaleDateString("pt-BR"),
+    }));
+
+    return { tema: nomeTema, ranking: rankingFormatado };
+  }
+
+  /**
+   * Retorna o ranking geral agrupado por todos os temas jogados.
+   * @returns {Promise<object[]>}
+   */
+  static async getRankingGeral() {
+    // Pega todos os IDs de jogos que já possuem pelo menos uma partida registrada
+    const jogosJogadosQuery = "SELECT DISTINCT jogo_id FROM partida";
+    const jogosResult = await pool.query(jogosJogadosQuery);
+
+    const rankingGeral = [];
+
+    // Para cada jogo que já foi jogado, busca o ranking e adiciona à lista
+    for (let linha of jogosResult.rows) {
+      const rankingDoTema = await RankingService.getRankingPorTema(
+        linha.jogo_id,
+      );
+      rankingGeral.push(rankingDoTema);
+    }
+
+    return rankingGeral;
+  }
 }
