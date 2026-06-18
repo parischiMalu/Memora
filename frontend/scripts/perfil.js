@@ -1,7 +1,6 @@
 const perfil = document.getElementById("perfil-btn");
 const dropdown = document.getElementsByClassName("menu-dropdown")[0];
 
-// ADICIONADO o (event) aqui dentro dos parênteses
 perfil.addEventListener("click", (event) => {
   event.stopPropagation();
   const aberto = dropdown.style.display === "block";
