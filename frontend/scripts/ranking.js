@@ -4,17 +4,13 @@ const rankingLista = document.getElementById("ranking-lista");
 const rankingVazio = document.getElementById("ranking-vazio");
 const rankingNome = document.getElementById("ranking-nome");
 
-// 1. Validação de Autenticação (Usando o padrão do novo login)
+
 const usuarioString = localStorage.getItem("usuarioLogado");
 
-//if (!usuarioString) {
-//  window.location.href = "/frontend/index.html";
-//}
 
 const USUARIO = JSON.parse(usuarioString);
 
-// 2. Formatador de Tempo
-// O backend devolve o tempo com um "s" no final (ex: "45s"). Precisamos limpar isso para a matemática funcionar.
+
 const formatarTempo = (tempoString) => {
   const segundos = parseInt(tempoString.replace("s", ""), 10);
   const m = Math.floor(segundos / 60);
@@ -23,7 +19,7 @@ const formatarTempo = (tempoString) => {
   return `${pad(m)}:${pad(s)}`;
 };
 
-// 3. Renderização de cada linha do Ranking
+
 const criaItem = (registro, posicao) => {
   // Distribui medalhas para o top 3
   const medal =
@@ -35,7 +31,7 @@ const criaItem = (registro, posicao) => {
           ? "🥉"
           : `${posicao}º`;
 
-  // Destaca o usuário logado caso ele esteja no ranking
+
   const isUsuarioAtual = registro.nome === USUARIO.nickname;
   const destaqueClasse = isUsuarioAtual
     ? 'style="background-color: #e8f5e9; font-weight: bold;"'
@@ -50,7 +46,7 @@ const criaItem = (registro, posicao) => {
     `;
 };
 
-// 4. Consumo da API e Construção da Tela
+
 const carregarRanking = async () => {
   try {
     // Atualiza o título
@@ -90,7 +86,7 @@ const carregarRanking = async () => {
       }
     });
 
-    // Caso todos os temas venham vazios
+    
     if (htmlFinal === "") {
       rankingVazio.style.display = "block";
     } else {
