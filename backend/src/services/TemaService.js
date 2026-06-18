@@ -1,10 +1,6 @@
 // src/services/TemaService.js
 import { pool } from "../config/db.js";
 
-/**
- * Responsável por gerenciar os temas.
- * Agora integrado 100% ao PostgreSQL na tabela 'jogo'.
- */
 export class TemaService {
   /**
    * Retorna todos os temas disponíveis no sistema.
@@ -45,7 +41,6 @@ export class TemaService {
 
   /**
    * Cadastra um novo tema no sistema (ação de administrador).
-   * Exige no mínimo 12 cartas.
    * @param {string} nome - Nome do tema
    * @param {string[]} cartas - Array com os emojis/identificadores das cartas
    * @returns {Promise<object>} - o novo tema criado

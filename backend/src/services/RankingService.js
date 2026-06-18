@@ -3,12 +3,10 @@ import { pool } from "../config/db.js";
 
 /**
  * Responsável por gerar o ranking de jogadores integrado ao PostgreSQL.
- * O ranking é focado estritamente no melhor tempo por tema (jogo).
  */
 export class RankingService {
   /**
    * Retorna o ranking de um tema específico.
-   * Filtra apenas jogadores que jogaram aquele tema e pega o melhor tempo de cada um.
    * @param {number} temaId
    * @returns {Promise<object>}
    */
@@ -44,7 +42,7 @@ export class RankingService {
 
     const rankingResult = await pool.query(rankingQuery, [temaId]);
 
-    // 3. Formata a resposta para manter o padrão (adicionando o 's' no tempo e formatando a data)
+    // 3. Formata a resposta para manter o padrão
     const rankingFormatado = rankingResult.rows.map((r) => ({
       nome: r.nome,
       melhorTempo: `${r.melhorTempo}s`,

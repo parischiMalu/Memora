@@ -4,10 +4,8 @@ import { pool } from "../config/db.js";
 
 /**
  * Representa uma partida em andamento.
- * Coordena o jogador, o tabuleiro gerado e o tempo da partida.
  */
 export class GameSession {
-  // ÚNICO CONSTRUTOR: Agora recebendo as cartasDoTema
   constructor(jogador, temaId, nivelId, cartasDoTema) {
     if (!jogador || !jogador.id) {
       throw new Error(
@@ -30,7 +28,6 @@ export class GameSession {
 
   /**
    * Finaliza a partida: calcula o tempo decorrido, salva no PostgreSQL
-   * e verifica o recorde do jogador.
    * @returns {Promise<{ tempo: number, novoRecorde: boolean }>}
    */
   async finalizarPartida(pontuacao = 0) {
@@ -39,7 +36,7 @@ export class GameSession {
     }
 
     this.fim = Date.now();
-    this.tempoFinal = Math.floor((this.fim - this.inicio) / 1000); // converte para segundos
+    this.tempoFinal = Math.floor((this.fim - this.inicio) / 1000);
     this.encerrada = true;
 
     // 1. Verifica o recorde atual do jogador no banco ANTES de salvar a nova partida
@@ -64,7 +61,6 @@ export class GameSession {
     await pool.query(insertQuery, valores);
 
     // 3. Verifica se bateu o recorde
-    // É recorde se ele não tinha tempo anterior (null) ou se o novo tempo é menor que o antigo
     const novoRecorde =
       recordeAntigo === null || this.tempoFinal < recordeAntigo;
 

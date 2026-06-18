@@ -1,6 +1,6 @@
 // src/app.js
 import express from "express";
-import cors from "cors"; // Importado
+import cors from "cors";
 import { AuthService } from "./services/AuthService.js";
 import { TemaService } from "./services/TemaService.js";
 import { RankingService } from "./services/RankingService.js";
@@ -8,7 +8,7 @@ import { GameSession } from "./models/GameSession.js";
 
 const app = express(); // 1º: Inicializa o app
 
-// 2º: Configura Middlewares (A ordem aqui é importante)
+// 2º: Configura Middlewares
 app.use(cors()); // Libera o acesso para o frontend
 app.use(express.json()); // Permite ler JSON
 
