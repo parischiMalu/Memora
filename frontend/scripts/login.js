@@ -1,13 +1,6 @@
-// =========================================================
-// 1. COMUNICAÇÃO COM A API (BACKEND)
-// =========================================================
 
-// URL base do seu servidor backend (onde a API está rodando)
 const API_URL = "http://localhost:3000/api";
 
-/**
- * Envia os dados de cadastro para a API
- */
 async function cadastrar(nome, email, senha) {
   const resposta = await fetch(`${API_URL}/jogadores`, {
     method: "POST",
@@ -23,7 +16,7 @@ async function cadastrar(nome, email, senha) {
 
   const dados = await resposta.json();
 
-  // Se o status HTTP não for de sucesso (200-299), lança o erro enviado pela API
+ 
   if (!resposta.ok) {
     throw new Error(dados.erro || "Erro ao realizar o cadastro.");
   }
@@ -31,9 +24,7 @@ async function cadastrar(nome, email, senha) {
   return dados;
 }
 
-/**
- * Envia as credenciais de login para a API e armazena os dados do usuário
- */
+
 async function login(email, senha) {
   const resposta = await fetch(`${API_URL}/login`, {
     method: "POST",
@@ -57,10 +48,6 @@ async function login(email, senha) {
 
   return dados;
 }
-
-// =========================================================
-// 2. LÓGICA DE INTERFACE E VALIDAÇÕES (SEU CÓDIGO)
-// =========================================================
 
 const emailInput = document.getElementById("usuario");
 const senhaInput = document.getElementById("senha");
