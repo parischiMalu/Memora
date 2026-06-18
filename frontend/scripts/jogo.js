@@ -7,7 +7,8 @@ const usuarioString = localStorage.getItem("usuarioLogado");
 
 // Se não tiver usuário salvo, volta para o login IMEDIATAMENTE
 if (!usuarioString) {
-  window.location.href = "../index.html";
+  // COMO ESTÃO NA MESMA PASTA, O CAMINHO É APENAS O NOME DO ARQUIVO
+  window.location.href = "index.html";
 }
 
 // Converte de volta para objeto para podermos pegar o USUARIO.id e USUARIO.nickname
@@ -54,7 +55,6 @@ const resetTimer = () => {
 const startTimer = () => {
   if (timerStarted) return;
   timerStarted = true;
-
   timer = setInterval(() => {
     totalSeconds++;
     minutes.innerHTML = pad(Math.floor(totalSeconds / 60));
@@ -110,16 +110,13 @@ const checaCartas = () => {
   if (primeiraCarta === segundaCarta) {
     firstCard.firstChild.classList.add("disabled-carta");
     secondCard.firstChild.classList.add("disabled-carta");
-
     firstCard = "";
     secondCard = "";
-
     checaEndGame();
   } else {
     setTimeout(() => {
       firstCard.classList.remove("revela-carta");
       secondCard.classList.remove("revela-carta");
-
       firstCard = "";
       secondCard = "";
     }, 500);
@@ -157,7 +154,6 @@ const criaCarta = (item) => {
 
   card.appendChild(front);
   card.appendChild(back);
-
   card.addEventListener("click", revelaCarta);
   card.setAttribute("nome-carta", item); // O emoji é a chave para validar o par
 
@@ -210,19 +206,20 @@ const loadGame = async () => {
 // ==========================================
 // FUNÇÃO DE SAIR / LOGOUT
 // ==========================================
-const btnSair = document.getElementById("btn-sair");
+// Escuta os cliques na página inteira e verifica se foi no botão de sair
+document.addEventListener("click", (evento) => {
+  const botaoSair = evento.target.closest("#btn-sair");
 
-if (btnSair) {
-  btnSair.addEventListener("click", (evento) => {
+  if (botaoSair) {
     evento.preventDefault();
 
-    // Remove EXATAMENTE a chave que o login criou
+    // Remove a chave correta do login
     localStorage.removeItem("usuarioLogado");
 
-    // Redireciona de volta para a tela de login
-    window.location.href = "../index.html";
-  });
-}
+    // Redireciona para o index.html na mesma pasta
+    window.location.href = "index.html";
+  }
+});
 
 // Reinicia o jogo quando o usuário troca de tema
 setOnTemaChange(() => loadGame());
