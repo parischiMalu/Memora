@@ -1,15 +1,15 @@
-// src/scripts/tema.js
+
 
 const BACKEND = "http://localhost:3000/api"; // URL da sua API
 
 const temaBtn = document.getElementById("tema-btn");
 const temasMenu = document.getElementById("temas");
 
-let cacheTemas = []; // Irá guardar o array de temas vindo do PostgreSQL
-let temaSelecionado = { id: 1, nome: "Carregando..." }; // Valor inicial seguro
+let cacheTemas = []; 
+let temaSelecionado = { id: 1, nome: "Carregando..." }; 
 let onTemaChange = null;
 
-// 1. GERENCIAMENTO DO DROPDOWN (Sua lógica original preservada)
+
 temaBtn.addEventListener("click", (event) => {
   event.stopPropagation();
   const aberto = temasMenu.style.display === "block";
@@ -22,12 +22,12 @@ window.addEventListener("click", (event) => {
   }
 });
 
-// 2. EVENTO DE CLIQUE: Modificado para ler o ID dinâmico vindo do banco
+
 temasMenu.addEventListener("click", (event) => {
   if (event.target.tagName === "LI") {
     const idClicado = parseInt(event.target.dataset.id, 10);
 
-    // Procura o tema correspondente no cache de dados salvos
+    
     const tema = cacheTemas.find((t) => t.id === idClicado);
 
     if (tema) {
@@ -41,7 +41,6 @@ temasMenu.addEventListener("click", (event) => {
   }
 });
 
-// 3. INTEGRAÇÃO COM O BANCO: Busca os temas e monta os elementos <li> na tela
 async function carregarTemasDoBanco() {
   try {
     const resposta = await fetch(`${BACKEND}/temas`);
@@ -49,10 +48,10 @@ async function carregarTemasDoBanco() {
 
     cacheTemas = await resposta.json(); // Recebe a lista do Postgres
 
-    // Limpa qualquer <li> estático que esteja no HTML
+    
     temasMenu.innerHTML = "";
 
-    // Cria cada item de menu dinamicamente
+    
     cacheTemas.forEach((tema) => {
       const li = document.createElement("li");
       li.textContent = tema.nome;
@@ -72,7 +71,6 @@ async function carregarTemasDoBanco() {
   }
 }
 
-// Inicializa a busca assim que o arquivo é importado pela aplicação
 carregarTemasDoBanco();
 
 export const getTema = () => temaSelecionado;
